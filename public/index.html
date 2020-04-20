@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="author" content="Beatnik Technology" />
+	<meta name="description" content="Show Talent" />
+	<!-- responsive tag -->
+	<meta http-equiv="x-ua-compatible" content="ie=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title title="%PUBLIC_URL%">Show Talent</title>
+
+	<link rel="apple-touch-icon" href="https://i.imgur.com/QRAUqs9.png">
+	<link rel="shortcut icon" href="https://i.imgur.com/QRAUqs9.png">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+
+</head>
+
+<body>
+	<div id="root"></div>
+
+
+	<script src="%PUBLIC_URL%/assets/js/jquery.min.js"></script>
+	<script src="%PUBLIC_URL%/assets/js/bootstrap.bundle.min.js"></script>
+	<script src="%PUBLIC_URL%/assets/js/jquery.dataTables.js"></script>
+	<script src="%PUBLIC_URL%/assets/js/dataTables.bootstrap4.js"></script>
+	<script src="%PUBLIC_URL%/assets/js/adminlte.min.js"></script>
+
+
+	<script>
+		$(function () {
+			$("#example1").DataTable();
+			$('#example2').DataTable({
+				"paging": true,
+				"lengthChange": false,
+				"searching": false,
+				"ordering": true,
+				"info": true,
+				"autoWidth": false,
+			});
+		});
+	</script>
+
+</body>
+
+</html>
