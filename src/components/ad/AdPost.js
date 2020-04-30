@@ -5,9 +5,11 @@ import { API_URL } from '../../store/actions/types'
 import { Link } from 'react-router-dom';
 import Loading from './../layout/Loading';
 import { getStatus, getDateTime } from '../../util/helper';
+import { approveData, rejectData } from '../../store/actions/adActions';
 
 
-class EbookContent extends Component {
+
+class AdPost extends Component {
     state = {
         data: [],
         loading: true,
@@ -20,14 +22,14 @@ class EbookContent extends Component {
             loading: true,
             data: [],
         })
-        Axios.get(`${API_URL}api/admin/ebook`)
+        Axios.get(`${API_URL}api/admin/posted-ad`)
             .then(res => {
                 this.setState({
                     loading: false,
                     data: res.data
                 })
             })
-            .catch(error => console.error(error))
+            .catch(error => console.log(error.response))
     }
     approveHandler = id => {
         let { approveData } = this.props
@@ -53,7 +55,8 @@ class EbookContent extends Component {
                         <div className="col-12">
                             <div className="card">
                                 <div className="card-header">
-                                    <h3 className="card-title">List of Ebook</h3>
+                                    <h3 className="card-title">List of Ad</h3>
+                                    <Link className="btn btn-dark btn-sm float-right" to='/users/edit'><i className="fa fa-plus"></i></Link>
                                 </div>
                                 <div className="card-body">
                                     <table id="example2" className="table table-bordered table-hover">
@@ -61,13 +64,12 @@ class EbookContent extends Component {
                                             <tr>
                                                 <th>Action</th>
                                                 <th>Creator</th>
-                                                <th>Category</th>
-                                                <th>Author Name</th>
-                                                <th>Language</th>
                                                 <th>Title</th>
-                                                <th>Publication Date</th>
-                                                <th>No of Chapter</th>
-                                                <th>Price</th>
+                                                <th>Image</th>
+                                                <th>Video</th>
+                                                <th>Hyperlink</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
                                                 <th>Status</th>
                                                 <th>Created At</th>
                                             </tr>
@@ -78,36 +80,28 @@ class EbookContent extends Component {
                                                     <td colSpan="10">
                                                         <Loading />
                                                     </td>
-                                                </tr> : Object.keys(data).length !== 0 && data.map(item =>
+                                                </tr> : data.length > 0 && data.map(item =>
                                                     <tr key={item.id}>
                                                         <td>
-                                                            {/* {Number(item.status) === 0 &&
+                                                            {Number(item.status) === 0 &&
                                                                 <a href="#blank" className="btn btn-success btn-sm" onClick={() => this.approveHandler(item.id)}>
                                                                     <i className="fa fa-check"></i>
-                                                                </a>} */}
-                                                            <Link className="btn btn-dark btn-sm mx-2" to={`/ebook/edit/${item.id}`}>
+                                                                </a>}
+                                                            {/* <Link className="btn btn-dark btn-sm mx-2" to={`/posts/edit/${item.id}`}>
                                                                 <i className="fa fa-edit"></i>
-                                                            </Link>
-                                                            <Link className="btn btn-dark btn-sm mx-2" to={`/ebook/chapter/${item.id}`}>
-                                                                <i className="fa fa-eye"></i>
-                                                            </Link>
-                                                            {/* {Number(item.status) === 0 &&
+                                                            </Link> */}
+                                                            {Number(item.status) === 0 &&
                                                                 <a href="#blank" className="btn btn-danger btn-sm" onClick={() => this.rejectHandler(item.id)}>
                                                                     <i className="fa fa-times"></i>
-                                                                </a>} */}
+                                                                </a>}
                                                         </td>
                                                         <td>{item.user_name}</td>
-                                                        <td>{item.cat_name}</td>
-                                                        <td>{item.author_name}</td>
-                                                        <td>{item.language}</td>
                                                         <td>{item.title}</td>
-                                                        <td>{item.publication_date}</td>
-                                                        <td>
-                                                            <Link to={`/ebook/chapter/${item.id}`}>
-                                                                {item.number_of_chapter}
-                                                            </Link>
-                                                        </td>
-                                                        <td>{item.price}</td>
+                                                        <td>{item.image && <a href={API_URL + item.image}><img src={API_URL + item.image} alt height="100" /></a>}</td>
+                                                        <td><a href={item.video} target="_blank">{item.video}</a></td>
+                                                        <td><a href={item.Hyperlink} target="_blank">{item.Hyperlink}</a></td>
+                                                        <td>{item.start_date}</td>
+                                                        <td>{item.end_date}</td>
                                                         <td>{getStatus(item.status)}</td>
                                                         <td>{getDateTime(item.created_at)}</td>
                                                     </tr>)}
@@ -122,4 +116,4 @@ class EbookContent extends Component {
         )
     }
 }
-export default connect(null)(EbookContent)
+export default connect(null, { approveData, rejectData })(AdPost)

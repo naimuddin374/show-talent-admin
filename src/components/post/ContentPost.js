@@ -5,6 +5,7 @@ import { API_URL } from '../../store/actions/types'
 import { Link } from 'react-router-dom';
 import Loading from './../layout/Loading';
 import { approveData, rejectData } from '../../store/actions/postActions';
+import { getStatus } from '../../util/helper';
 
 
 class ContentPost extends Component {
@@ -95,7 +96,7 @@ class ContentPost extends Component {
                                                         <td>{item.title}</td>
                                                         <td>{item.description}</td>
                                                         <td>{item.image && <a href={API_URL + item.image}><img src={API_URL + item.image} height="60" alt="" /></a>}</td>
-                                                        <td>{(Number(item.status) === 0 && "Pending") || (Number(item.status) === 1 && "Active") || (Number(item.status) === 2 && "Rejected")}</td>
+                                                        <td>{getStatus(item.status)}</td>
                                                         <td>{item.created_at}</td>
                                                     </tr>)}
                                         </tbody>
@@ -109,4 +110,4 @@ class ContentPost extends Component {
         )
     }
 }
-export default connect(null)(ContentPost)
+export default connect(null, { approveData, rejectData })(ContentPost)

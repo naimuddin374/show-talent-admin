@@ -5,6 +5,7 @@ import { API_URL } from '../../store/actions/types'
 import { Link } from 'react-router-dom';
 import Loading from './../layout/Loading';
 import { approveData, rejectData } from '../../store/actions/postActions';
+import { getStatus } from '../../util/helper';
 
 
 class OpinionPost extends Component {
@@ -93,7 +94,7 @@ class OpinionPost extends Component {
                                                         <td>{item.cat_name}</td>
                                                         <td>{item.title}</td>
                                                         <td>{item.description}</td>
-                                                        <td>{(Number(item.status) === 0 && "Pending") || (Number(item.status) === 1 && "Active") || (Number(item.status) === 2 && "Rejected")}</td>
+                                                        <td>{getStatus(item.status)}</td>
                                                         <td>{item.created_at}</td>
                                                     </tr>)}
                                         </tbody>

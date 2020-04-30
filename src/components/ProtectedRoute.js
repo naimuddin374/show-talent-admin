@@ -20,6 +20,10 @@ import CategoryList from './tools/CategoryList';
 import CategoryEdit from './tools/CategoryEdit';
 import EbookContent from './ebook/EbookContent';
 import EbookEdit from './ebook/ContentEdit';
+import AdPost from './ad/AdPost';
+import Account from './account/Account';
+import Comment from './comment/Comment';
+import Chapter from './ebook/Chapter';
 
 
 class ProtectedRoute extends React.Component {
@@ -33,33 +37,51 @@ class ProtectedRoute extends React.Component {
                     <div className="content-wrapper">
 
                         <Switch>
+
+                            {/* Ad */}
+                            <Route path='/account' exact component={Account} history={this.props.history} />
+
+
+
+                            {/* Comment */}
+                            <Route path='/comment/post/:id' exact component={Comment} history={this.props.history} />
+
+
+                            {/* Ad */}
+                            {/* <Route path='/ads/edit/:id' component={EbookEdit} history={this.props.history} />
+                            <Route path='/ads/detail/:id' component={CategoryEdit} history={this.props.history} /> */}
+                            <Route path='/ads' component={AdPost} exact history={this.props.history} />
+
+
+
                             {/* Ebook */}
-                            <Route path='/ebook/edit/:id' component={EbookEdit} history={this.props.history} />
-                            <Route path='/ebook/detail/:id' component={CategoryEdit} history={this.props.history} />
-                            <Route path='/ebook' component={EbookContent} history={this.props.history} />
+                            <Route path='/ebook/edit/:id' exact component={EbookEdit} history={this.props.history} />
+                            <Route path='/ebook/detail/:id' exact component={CategoryEdit} history={this.props.history} />
+                            <Route path='/ebook' exact component={EbookContent} history={this.props.history} />
+                            <Route path='/ebook/chapter/:id' exact component={Chapter} history={this.props.history} />
 
 
 
                             {/* Category */}
-                            <Route path='/category/edit/:id' component={CategoryEdit} history={this.props.history} />
-                            <Route path='/category/edit' component={CategoryEdit} history={this.props.history} />
-                            <Route path='/category' component={CategoryList} history={this.props.history} />
+                            <Route path='/category/edit/:id' exact component={CategoryEdit} history={this.props.history} />
+                            <Route path='/category/edit' exact component={CategoryEdit} history={this.props.history} />
+                            <Route path='/category' exact component={CategoryList} history={this.props.history} />
 
 
                             {/* Post route */}
-                            <Route path='/posts/edit/:id' component={PostEdit} history={this.props.history} />
-                            <Route path='/posts/post' component={Post} history={this.props.history} />
-                            <Route path='/posts/newslink' component={NewsLink} history={this.props.history} />
-                            <Route path='/posts/opinion' component={OpinionPost} history={this.props.history} />
-                            <Route path='/posts/image' component={ImagePost} history={this.props.history} />
-                            <Route path='/posts/video' component={VideoPost} history={this.props.history} />
-                            <Route path='/posts/content' component={ContentPost} history={this.props.history} />
+                            <Route path='/posts/edit/:id' exact component={PostEdit} history={this.props.history} />
+                            <Route path='/posts/post' exact component={Post} history={this.props.history} />
+                            <Route path='/posts/newslink' exact component={NewsLink} history={this.props.history} />
+                            <Route path='/posts/opinion' exact component={OpinionPost} history={this.props.history} />
+                            <Route path='/posts/image' exact component={ImagePost} history={this.props.history} />
+                            <Route path='/posts/video' exact component={VideoPost} history={this.props.history} />
+                            <Route path='/posts/content' exact component={ContentPost} history={this.props.history} />
 
 
                             {/* User route */}
-                            <Route path='/users/edit/:id' component={UserEdit} history={this.props.history} />
-                            <Route path='/users/edit' component={UserEdit} history={this.props.history} />
-                            <Route path='/users' component={User} history={this.props.history} />
+                            <Route path='/users/edit/:id' exact component={UserEdit} history={this.props.history} />
+                            <Route path='/users/edit' exact component={UserEdit} history={this.props.history} />
+                            <Route path='/users' exact component={User} history={this.props.history} />
                             <Route path='/' exact component={Home} history={this.props.history} />
                             <Route path='*' exact component={PageNotFound} history={this.props.history} />
                         </Switch>

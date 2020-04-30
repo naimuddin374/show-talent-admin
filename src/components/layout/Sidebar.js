@@ -72,7 +72,7 @@ class Sidebar extends Component {
                                 </li>
 
 
-                                {/* User */}
+                                {/* Ebook */}
                                 <li className="nav-item has-treeview">
                                     <a href="#blank" className="nav-link">
                                         <i className="nav-icon fas fa-tachometer-alt"></i>
@@ -88,15 +88,45 @@ class Sidebar extends Component {
                                     </ul>
                                 </li>
 
+                                {/* Ad */}
+                                <li className="nav-item has-treeview">
+                                    <a href="#blank" className="nav-link">
+                                        <i className="nav-icon fas fa-tachometer-alt"></i>
+                                        <p> Ad <i className="right fas fa-angle-left"></i> </p>
+                                    </a>
+                                    <ul className="nav nav-treeview">
+                                        <li className="nav-item">
+                                            <Link to="/ads" className="nav-link">
+                                                <i className="far fa-circle nav-icon"></i>
+                                                <p>List of Ad</p>
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                </li>
+
+
+                                {/* Account */}
+                                <li className="nav-item has-treeview">
+                                    <a href="#blank" className="nav-link">
+                                        <i className="nav-icon fas fa-tachometer-alt"></i>
+                                        <p> Account <i className="right fas fa-angle-left"></i> </p>
+                                    </a>
+                                    <ul className="nav nav-treeview">
+                                        <li className="nav-item">
+                                            <Link to="/account" className="nav-link">
+                                                <i className="far fa-circle nav-icon"></i>
+                                                <p>Account Statement</p>
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                </li>
+
 
                                 {/* User */}
                                 <li className="nav-item has-treeview">
                                     <a href="#blank" className="nav-link">
                                         <i className="nav-icon fas fa-users"></i>
-                                        <p>
-                                            User
-                <i className="right fas fa-angle-left"></i>
-                                        </p>
+                                        <p> User <i className="right fas fa-angle-left"></i> </p>
                                     </a>
                                     <ul className="nav nav-treeview">
                                         <li className="nav-item">
@@ -119,10 +149,7 @@ class Sidebar extends Component {
                                 <li className="nav-item has-treeview">
                                     <a href="#blank" className="nav-link">
                                         <i className="nav-icon fas fa-users"></i>
-                                        <p>
-                                            Tools
-                <i className="right fas fa-angle-left"></i>
-                                        </p>
+                                        <p> Tools <i className="right fas fa-angle-left"></i> </p>
                                     </a>
                                     <ul className="nav nav-treeview">
                                         <li className="nav-item">

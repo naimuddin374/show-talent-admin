@@ -5,6 +5,7 @@ import { API_URL } from '../../store/actions/types'
 import { Link } from 'react-router-dom';
 import Loading from './../layout/Loading';
 import { approveData, rejectData } from '../../store/actions/postActions';
+import { getStatus } from '../../util/helper';
 
 
 class NewsLink extends Component {
@@ -81,9 +82,16 @@ class NewsLink extends Component {
                                                                 <a href="#blank" className="btn btn-success btn-sm" onClick={() => this.approveHandler(item.id)}>
                                                                     <i className="fa fa-check"></i>
                                                                 </a>}
+
+                                                            <Link className="btn btn-dark btn-sm mx-2" to={`/comment/post/${item.id}`}>
+                                                                <i className="fa fa-comments"></i>
+                                                            </Link>
+
                                                             <Link className="btn btn-dark btn-sm mx-2" to={`/posts/edit/${item.id}`}>
                                                                 <i className="fa fa-edit"></i>
                                                             </Link>
+
+
                                                             {Number(item.status) === 0 &&
                                                                 <a href="#blank" className="btn btn-danger btn-sm" onClick={() => this.rejectHandler(item.id)}>
                                                                     <i className="fa fa-times"></i>
@@ -94,7 +102,7 @@ class NewsLink extends Component {
                                                         <td>{item.title}</td>
                                                         <td><a href={item.newslink} target="_blank">{item.newslink}</a></td>
 
-                                                        <td>{(Number(item.status) === 0 && "Pending") || (Number(item.status) === 1 && "Active") || (Number(item.status) === 2 && "Rejected")}</td>
+                                                        <td>{getStatus(item.status)}</td>
                                                         <td>{item.created_at}</td>
                                                     </tr>)}
                                         </tbody>

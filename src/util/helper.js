@@ -1,8 +1,23 @@
+import React from 'react'
 import store from '../store';
+import Moment from 'react-moment';
 
-export const actionStatus = () => {
-    const state = store.getState();
-    return state.common.actionStatus
+export const getStatus = status => {
+    switch (Number(status)) {
+        case 0: return 'Pending'
+        case 1: return 'Approve'
+        case 2: return 'Rejected'
+        default: return status
+    }
+}
+/* type value, 1=date and time, 2=date, 3=time */
+export const getDateTime = (dateTime, type = 1) => {
+    switch (type) {
+        case 1: return <Moment format="D MMM YYYY H:mm A" withTitle>{dateTime}</Moment>
+        case 2: return <Moment format="D MMM YYYY" withTitle>{dateTime}</Moment>
+        case 3: return <Moment format="H:M A" withTitle>{dateTime}</Moment>
+        default: return dateTime
+    }
 }
 
 export const textLimit = (text, limit = 100) => {
@@ -84,5 +99,5 @@ export const setEndTime = startTime => {
         return "18:30:00"
     } else if (startTime === "18:30:00") {
         return "19:00:00"
-    } 
+    }
 }

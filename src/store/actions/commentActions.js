@@ -4,7 +4,7 @@ import Axios from 'axios'
 
 // Data Update
 export const updateData = (data, id) => async dispatch => {
-    return Axios.put(`${API_URL}api/post/${id}`, data)
+    return Axios.put(`${API_URL}api/comment/${id}`, data)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -28,7 +28,7 @@ export const updateData = (data, id) => async dispatch => {
 
 // Data Delete
 export const deleteData = id => dispatch => {
-    Axios.delete(`${API_URL}api/post/${id}`)
+    Axios.delete(`${API_URL}api/comment/${id}`)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -50,7 +50,7 @@ export const deleteData = id => dispatch => {
 
 // Data Approve
 export const approveData = id => dispatch => {
-    Axios.put(`${API_URL}api/post/approve/${id}`)
+    Axios.put(`${API_URL}api/comment/approve/${id}`)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -72,7 +72,7 @@ export const approveData = id => dispatch => {
 
 // Data Reject
 export const rejectData = id => dispatch => {
-    Axios.put(`${API_URL}api/post/reject/${id}`)
+    Axios.put(`${API_URL}api/comment/reject/${id}`)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,

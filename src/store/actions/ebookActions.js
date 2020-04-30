@@ -50,7 +50,7 @@ export const deleteData = id => dispatch => {
 
 // Data Approve
 export const approveData = id => dispatch => {
-    Axios.delete(`${API_URL}api/ebook/approve/${id}`)
+    Axios.put(`${API_URL}api/ebook/approve/${id}`)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -72,7 +72,7 @@ export const approveData = id => dispatch => {
 
 // Data Reject
 export const rejectData = id => dispatch => {
-    Axios.delete(`${API_URL}api/ebook/reject/${id}`)
+    Axios.put(`${API_URL}api/ebook/reject/${id}`)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
