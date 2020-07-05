@@ -7,12 +7,15 @@ import store from './store';
 import { SET_USER } from './store/actions/types';
 import { BrowserRouter } from 'react-router-dom';
 import History from './util/History'
+import setAuthToken from './util/setAuthToken';
 
-let authUser = localStorage.getItem('auth_user')
-if (authUser) {
+
+let token = localStorage.getItem('authToken');
+if (token) {
+    setAuthToken(token)
     store.dispatch({
         type: SET_USER,
-        payload: JSON.parse(authUser)
+        payload: token
     })
 }
 

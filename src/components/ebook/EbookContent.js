@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
-import Axios from 'axios'
-import { API_URL } from '../../store/actions/types'
 import { Link } from 'react-router-dom';
 import Loading from './../layout/Loading';
 import { getStatus, getDateTime } from '../../util/helper';
+import { getAllBook } from '../../store/actions/ebookActions';
+import { API_URL } from '../../store/actions/types';
 
 
 class EbookContent extends Component {
@@ -15,33 +15,25 @@ class EbookContent extends Component {
     componentDidMount() {
         this.onFetchData()
     }
-    onFetchData = () => {
+    onFetchData = async () => {
         this.setState({
             loading: true,
             data: [],
         })
-        Axios.get(`${API_URL}api/admin/ebook`)
-            .then(res => {
-                this.setState({
-                    loading: false,
-                    data: res.data
-                })
-            })
-            .catch(error => console.error(error))
+        this.setState({
+            loading: false,
+            data: await this.props.getAllBook()
+        })
     }
-    approveHandler = id => {
+    approveHandler = async id => {
         let { approveData } = this.props
-        approveData(id)
-        setTimeout(() => {
-            this.onFetchData()
-        }, 500)
+        await approveData(id)
+        this.onFetchData()
     }
-    rejectHandler = id => {
+    rejectHandler = async id => {
         let { rejectData } = this.props
-        rejectData(id)
-        setTimeout(() => {
-            this.onFetchData()
-        }, 500)
+        await rejectData(id)
+        this.onFetchData()
     }
     render() {
 
@@ -62,14 +54,17 @@ class EbookContent extends Component {
                                                 <th>Action</th>
                                                 <th>Creator</th>
                                                 <th>Category</th>
+                                                <th>Name</th>
                                                 <th>Author Name</th>
-                                                <th>Language</th>
-                                                <th>Title</th>
                                                 <th>Publication Date</th>
+                                                <th>Preface</th>
+                                                <th>Summary</th>
+                                                <th>Author Summary</th>
                                                 <th>No of Chapter</th>
-                                                <th>Price</th>
                                                 <th>Status</th>
                                                 <th>Created At</th>
+                                                <th>Front Image</th>
+                                                <th>Back Image</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -88,7 +83,7 @@ class EbookContent extends Component {
                                                             <Link className="btn btn-dark btn-sm mx-2" to={`/ebook/edit/${item.id}`}>
                                                                 <i className="fa fa-edit"></i>
                                                             </Link>
-                                                            <Link className="btn btn-dark btn-sm mx-2" to={`/ebook/chapter/${item.id}`}>
+                                                            <Link className="btn btn-dark btn-sm mx-2" to={`/ebook/detail/${item.id}`}>
                                                                 <i className="fa fa-eye"></i>
                                                             </Link>
                                                             {/* {Number(item.status) === 0 &&
@@ -96,20 +91,23 @@ class EbookContent extends Component {
                                                                     <i className="fa fa-times"></i>
                                                                 </a>} */}
                                                         </td>
-                                                        <td>{item.user_name}</td>
-                                                        <td>{item.cat_name}</td>
+                                                        <td>{item.page ? item.page.name : item.user.name}</td>
+                                                        <td>{item.category.name}</td>
+                                                        <td>{item.name}</td>
                                                         <td>{item.author_name}</td>
-                                                        <td>{item.language}</td>
-                                                        <td>{item.title}</td>
                                                         <td>{item.publication_date}</td>
+                                                        <td>{item.preface}</td>
+                                                        <td>{item.summary}</td>
+                                                        <td>{item.author_summary}</td>
                                                         <td>
-                                                            <Link to={`/ebook/chapter/${item.id}`}>
-                                                                {item.number_of_chapter}
+                                                            <Link to={`/ebook/detail/${item.id}`}>
+                                                                {item.chapter.length}
                                                             </Link>
                                                         </td>
-                                                        <td>{item.price}</td>
                                                         <td>{getStatus(item.status)}</td>
                                                         <td>{getDateTime(item.created_at)}</td>
+                                                        <td>{item.front_image && <img src={API_URL + item.front_image} width='100' />}</td>
+                                                        <td>{item.back_image && <img src={API_URL + item.back_image} width='100' />}</td>
                                                     </tr>)}
                                         </tbody>
                                     </table>
@@ -122,4 +120,4 @@ class EbookContent extends Component {
         )
     }
 }
-export default connect(null)(EbookContent)
+export default connect(null, { getAllBook })(EbookContent)

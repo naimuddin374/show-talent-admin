@@ -1,11 +1,12 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
+import './assets/scss/style.scss';
+
 import { connect } from 'react-redux';
 import AlertMessage from './layout/AlertMessage';
 import ProtectedRoute from './ProtectedRoute';
 import AuthRoutes from './AuthRoutes';
-
 
 
 class App extends React.Component {

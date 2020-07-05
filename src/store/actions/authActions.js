@@ -1,40 +1,32 @@
-import { SET_MESSAGE, API_URL, SET_USER, LOGIN_ACTION_STATUS, FORGOT_PASS_STATUS, RESET_PASSWORD } from './types'
+import { SET_MESSAGE, API_URL, SET_USER, FORGOT_PASS_STATUS, RESET_PASSWORD } from './types'
 import Axios from 'axios'
+import setAuthToken from '../../util/setAuthToken'
+
 
 // Login
-export const login = data => dispatch => {
-    dispatch({
-        type: LOGIN_ACTION_STATUS,
-        payload: 1
-    })
-    Axios.post(`${API_URL}api/login`, data)
+export const login = data => async dispatch => {
+    Axios.post(`${API_URL}api/auth/login`, data)
         .then(res => {
-            let user = res.data.user
-            localStorage.setItem('auth_user', JSON.stringify(user))
-            dispatch({
-                type: SET_USER,
-                payload: user
-            })
-            dispatch({
-                type: SET_MESSAGE,
-                payload: {
-                    message: res.data.message,
-                    type: 'success',
-                }
-            })
-
-            setTimeout(() => {
+            if (res.data.token) {
                 dispatch({
-                    type: LOGIN_ACTION_STATUS,
-                    payload: 0
+                    type: SET_MESSAGE,
+                    payload: {
+                        message: res.data.message,
+                        type: 'success',
+                    }
                 })
-            }, 100)
+
+                let token = res.data.token
+                localStorage.setItem('authToken', JSON.stringify(token))
+                setAuthToken(token)
+                dispatch({
+                    type: SET_USER,
+                    payload: token
+                })
+            }
+            return true
         })
         .catch(err => {
-            dispatch({
-                type: LOGIN_ACTION_STATUS,
-                payload: 3
-            })
             dispatch({
                 type: SET_MESSAGE,
                 payload: {
@@ -48,7 +40,7 @@ export const login = data => dispatch => {
 
 // Logout
 export const logout = history => dispatch => {
-    localStorage.removeItem('auth_user')
+    localStorage.removeItem('authToken')
     history.push(`/`)
     window.location.reload();
     dispatch({
@@ -68,87 +60,3 @@ export const logout = history => dispatch => {
 }
 
 
-
-// Forgot
-export const forgotPassword = data => dispatch => {
-    dispatch({
-        type: FORGOT_PASS_STATUS,
-        payload: 1
-    })
-    Axios.post(`${API_URL}api/forgot-password`, data)
-        .then(res => {
-            console.log('res', res.data.data)
-            dispatch({
-                type: SET_MESSAGE,
-                payload: {
-                    message: res.data.message,
-                    type: 'success',
-                }
-            })
-            dispatch({
-                type: FORGOT_PASS_STATUS,
-                payload: 2
-            })
-            setTimeout(() => {
-                dispatch({
-                    type: FORGOT_PASS_STATUS,
-                    payload: 0
-                })
-            }, 100)
-        })
-        .catch(err => {
-            dispatch({
-                type: FORGOT_PASS_STATUS,
-                payload: 3
-            })
-            dispatch({
-                type: SET_MESSAGE,
-                payload: {
-                    message: err.response && err.response.data.message,
-                    type: 'error',
-                }
-            })
-        })
-}
-
-
-// Forgot
-export const resetPassword = data => dispatch => {
-    dispatch({
-        type: RESET_PASSWORD,
-        payload: 1
-    })
-    Axios.post(`${API_URL}api/reset-password`, data)
-        .then(res => {
-            dispatch({
-                type: SET_MESSAGE,
-                payload: {
-                    message: res.data.message,
-                    type: 'success',
-                }
-            })
-            dispatch({
-                type: RESET_PASSWORD,
-                payload: 2
-            })
-            setTimeout(() => {
-                dispatch({
-                    type: RESET_PASSWORD,
-                    payload: 0
-                })
-            }, 100)
-        })
-        .catch(err => {
-            dispatch({
-                type: RESET_PASSWORD,
-                payload: 3
-            })
-            dispatch({
-                type: SET_MESSAGE,
-                payload: {
-                    message: err.response && err.response.data.message,
-                    type: 'error',
-                }
-            })
-        })
-}

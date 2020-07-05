@@ -31,7 +31,6 @@ class PostEdit extends Component {
                 this.setState({ categories: res.data })
             })
 
-
         if (id) {
             Axios.get(`${API_URL}api/post/${id}`)
                 .then(res => {

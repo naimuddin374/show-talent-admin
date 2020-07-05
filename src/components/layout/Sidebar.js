@@ -33,39 +33,33 @@ class Sidebar extends Component {
                                     </a>
                                     <ul className="nav nav-treeview">
                                         {/* <li className="nav-item">
-                                            <Link to="/posts/post" className="nav-link">
+                                            <Link to="/posts/list/post" className="nav-link">
                                                 <i className="far fa-circle nav-icon"></i>
                                                 <p>List of Post</p>
                                             </Link>
                                         </li> */}
                                         <li className="nav-item">
-                                            <Link to="/posts/newslink" className="nav-link">
+                                            <Link to="/posts/list/2" className="nav-link">
                                                 <i className="far fa-circle nav-icon"></i>
                                                 <p>List of News link</p>
                                             </Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link to="/posts/opinion" className="nav-link">
+                                            <Link to="/posts/list/3" className="nav-link">
                                                 <i className="far fa-circle nav-icon"></i>
                                                 <p>List of Opinion</p>
                                             </Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link to="/posts/video" className="nav-link">
+                                            <Link to="/posts/list/4" className="nav-link">
                                                 <i className="far fa-circle nav-icon"></i>
                                                 <p>List of Video</p>
                                             </Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link to="/posts/image" className="nav-link">
+                                            <Link to="/posts/list/5" className="nav-link">
                                                 <i className="far fa-circle nav-icon"></i>
                                                 <p>List of Image</p>
-                                            </Link>
-                                        </li>
-                                        <li className="nav-item">
-                                            <Link to="/posts/content" className="nav-link">
-                                                <i className="far fa-circle nav-icon"></i>
-                                                <p>List of Content</p>
                                             </Link>
                                         </li>
                                     </ul>

@@ -1,12 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import { connect } from 'react-redux';
 import { logout } from '../../store/actions/authActions';
-import { API_URL } from '../../store/actions/types';
-import { Link } from 'react-router-dom';
-import ChangePassword from '../profile/ChangePassword';
 
 class Header extends Component {
     constructor(props) {
@@ -30,27 +24,26 @@ class Header extends Component {
 
                     <ul className="navbar-nav ml-auto">
                         <li className="nav-item dropdown">
+                            <a onClick={() => this.props.logout(this.props.history)} className="nav-link" data-toggle="dropdown" href="#Blank">
+                                Logout <i className="fa fa-lock"></i>
+                            </a>
+                        </li>
+                        <li className="nav-item dropdown">
                             <a className="nav-link" data-toggle="dropdown" href="#Blank">
-                                <i className="far fa-user-circle"></i>
+                                Admin <i className="far fa-user-circle"></i>
                                 <span className="badge badge-warning navbar-badge"></span>
                             </a>
                             <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                                <div className="dropdown-divider"></div> -->
-          <a href="#blank" className="dropdown-item">
+                                <div className="dropdown-divider"></div>
+                                <a href="#blank" className="dropdown-item">
                                     <i className="fas fa-sign-out mr-2"></i> Logout
           </a>
-                                <a href="#Blank" className="dropdown-item">
-                                    <i className="fas fa-users mr-2"></i> 8 friend requests
-            <span className="float-right text-muted text-sm">12 hours</span>
-                                </a>
                                 <div className="dropdown-divider"></div>
                                 <a href="#Blank" className="dropdown-item">
                                     <i className="fas fa-file mr-2"></i> 3 new reports
             <span className="float-right text-muted text-sm">2 days</span>
                                 </a>
-                                <div className="dropdown-divider"></div>
-                                <a href="#Blank" className="dropdown-item dropdown-footer">See All Notifications</a> -->
-        </div>
+                            </div>
                         </li>
                     </ul>
                 </nav>

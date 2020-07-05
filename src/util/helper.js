@@ -10,6 +10,14 @@ export const getStatus = status => {
         default: return status
     }
 }
+
+export const getVideoLink = link => {
+    if (link.length > 11) {
+        return link.slice(32, 43)
+    } else {
+        return link
+    }
+}
 /* type value, 1=date and time, 2=date, 3=time */
 export const getDateTime = (dateTime, type = 1) => {
     switch (type) {

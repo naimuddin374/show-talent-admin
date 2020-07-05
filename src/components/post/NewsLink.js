@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
-import Axios from 'axios'
-import { API_URL } from '../../store/actions/types'
 import { Link } from 'react-router-dom';
 import Loading from './../layout/Loading';
-import { approveData, rejectData } from '../../store/actions/postActions';
+import { approveData, rejectData, getAllPost } from '../../store/actions/postActions';
 import { getStatus } from '../../util/helper';
+import renderHTML from 'react-render-html';
+import { ReactTinyLink } from 'react-tiny-link'
 
 
 class NewsLink extends Component {
@@ -16,33 +16,27 @@ class NewsLink extends Component {
     componentDidMount() {
         this.onFetchData()
     }
-    onFetchData = () => {
+    onFetchData = async () => {
         this.setState({
             loading: true,
             data: [],
         })
-        Axios.get(`${API_URL}api/admin/get-post/2`)
-            .then(res => {
-                this.setState({
-                    loading: false,
-                    data: res.data
-                })
+        let response = await this.props.getAllPost()
+        if (response) {
+            this.setState({
+                data: response.filter(item => item.type === 2),
+                loading: false
             })
-            .catch(error => console.error(error))
+        }
     }
-    approveHandler = id => {
+    approveHandler = async id => {
         let { approveData } = this.props
-        approveData(id)
-        setTimeout(() => {
-            this.onFetchData()
-        }, 500)
+        await approveData(id)
+        this.onFetchData()
     }
-    rejectHandler = id => {
+    rejectHandler = async id => {
         let { rejectData } = this.props
-        rejectData(id)
-        setTimeout(() => {
-            this.onFetchData()
-        }, 500)
+        await rejectData(id)
     }
     render() {
 
@@ -64,6 +58,7 @@ class NewsLink extends Component {
                                                 <th>Creator</th>
                                                 <th>Category</th>
                                                 <th>Title</th>
+                                                <th>Description</th>
                                                 <th>News Link</th>
                                                 <th>Status</th>
                                                 <th>Created At</th>
@@ -75,17 +70,17 @@ class NewsLink extends Component {
                                                     <td colSpan="10">
                                                         <Loading />
                                                     </td>
-                                                </tr> : Object.keys(data).length !== 0 && data.map(item =>
+                                                </tr> : data.length > 0 && data.map(item =>
                                                     <tr key={item.id}>
                                                         <td>
                                                             {Number(item.status) === 0 &&
-                                                                <a href="#blank" className="btn btn-success btn-sm" onClick={() => this.approveHandler(item.id)}>
+                                                                <a href="#blank" className="btn btn-success btn-sm" onClick={() => window.confirm('Are you sure?') && this.approveHandler(item.id)}>
                                                                     <i className="fa fa-check"></i>
                                                                 </a>}
 
-                                                            <Link className="btn btn-dark btn-sm mx-2" to={`/comment/post/${item.id}`}>
+                                                            {/* <Link className="btn btn-dark btn-sm mx-2" to={`/comment/post/${item.id}`}>
                                                                 <i className="fa fa-comments"></i>
-                                                            </Link>
+                                                            </Link> */}
 
                                                             <Link className="btn btn-dark btn-sm mx-2" to={`/posts/edit/${item.id}`}>
                                                                 <i className="fa fa-edit"></i>
@@ -93,15 +88,26 @@ class NewsLink extends Component {
 
 
                                                             {Number(item.status) === 0 &&
-                                                                <a href="#blank" className="btn btn-danger btn-sm" onClick={() => this.rejectHandler(item.id)}>
+                                                                <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.rejectHandler(item.id)}>
                                                                     <i className="fa fa-times"></i>
                                                                 </a>}
                                                         </td>
-                                                        <td>{item.user_name}</td>
-                                                        <td>{item.cat_name}</td>
+                                                        <td>{item.page ? item.page.name : item.user.name}</td>
+                                                        <td>{item.category.name}</td>
                                                         <td>{item.title}</td>
-                                                        <td><a href={item.newslink} target="_blank">{item.newslink}</a></td>
-
+                                                        <td>{item.description && renderHTML(item.description)}</td>
+                                                        <td>
+                                                            {(item.newslink && item.newslink.length > 20 && item.type === 2) && <a href={item.newslink} target='_blank' >
+                                                                <ReactTinyLink
+                                                                    cardSize="large"
+                                                                    showGraphic={true}
+                                                                    maxLine={2}
+                                                                    minLine={1}
+                                                                    url={item.newslink}
+                                                                    loadSecureUrl={true}
+                                                                    width='100%'
+                                                                /></a>}
+                                                        </td>
                                                         <td>{getStatus(item.status)}</td>
                                                         <td>{item.created_at}</td>
                                                     </tr>)}
@@ -116,4 +122,4 @@ class NewsLink extends Component {
         )
     }
 }
-export default connect(null, { approveData, rejectData })(NewsLink)
+export default connect(null, { approveData, rejectData, getAllPost })(NewsLink)
