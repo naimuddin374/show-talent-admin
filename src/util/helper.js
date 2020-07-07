@@ -12,7 +12,7 @@ export const getStatus = status => {
 }
 
 export const getVideoLink = link => {
-    if (link.length > 11) {
+    if (link && link.length > 11) {
         return link.slice(32, 43)
     } else {
         return link

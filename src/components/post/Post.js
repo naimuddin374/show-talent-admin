@@ -32,12 +32,10 @@ class Post extends Component {
             type
         })
         let response = await this.props.getAllPost()
-        if (response) {
-            this.setState({
-                data: response.filter(item => item.type === type),
-                loading: false
-            })
-        }
+        this.setState({
+            data: response.filter(item => item.type === type),
+            loading: false
+        })
     }
     approveHandler = async id => {
         let { approveData } = this.props
@@ -68,12 +66,12 @@ class Post extends Component {
                                                 <th>Creator</th>
                                                 <th>Category</th>
                                                 <th>Title</th>
-                                                <th>Description</th>
                                                 {type === 2 && <th>News Link</th>}
                                                 {type === 4 && <th>Video</th>}
                                                 {type === 5 && <th>Image</th>}
                                                 <th>Status</th>
                                                 <th>Created At</th>
+                                                <th>Description</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -107,7 +105,6 @@ class Post extends Component {
                                                         <td>{item.page ? item.page.name : item.user.name}</td>
                                                         <td>{item.category.name}</td>
                                                         <td>{item.title}</td>
-                                                        <td>{item.description && renderHTML(item.description)}</td>
                                                         {item.type === 2 && <td>
                                                             {(item.newslink && item.newslink.length > 20) && <a href={item.newslink} target='_blank' >
                                                                 <ReactTinyLink
@@ -117,7 +114,6 @@ class Post extends Component {
                                                                     minLine={1}
                                                                     url={item.newslink}
                                                                     loadSecureUrl={true}
-                                                                    width='100%'
                                                                 /></a>}
                                                         </td>}
                                                         {item.type === 4 && <td>
@@ -128,6 +124,7 @@ class Post extends Component {
                                                         {item.type === 5 && <td>{item.image && <img src={API_URL + item.image} alt='Pic' width='100' />}</td>}
                                                         <td>{getStatus(item.status)}</td>
                                                         <td>{item.created_at}</td>
+                                                        <td>{item.description && renderHTML(item.description)}</td>
                                                     </tr>)}
                                         </tbody>
                                     </table>
