@@ -7,7 +7,8 @@ class Home extends Component {
         return (
             <Fragment>
                 <section className="content">
-                    <div className="row">
+                    <h2>Welcome to Dashboard</h2>
+                    {/* <div className="row">
                         <div className="col-12">
                             <div className="card">
                                 <div className="card-header">
@@ -141,7 +142,7 @@ class Home extends Component {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </section>
 
             </Fragment>

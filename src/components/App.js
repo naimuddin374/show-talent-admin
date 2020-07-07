@@ -5,7 +5,7 @@ import './assets/scss/style.scss';
 
 import { connect } from 'react-redux';
 import AlertMessage from './layout/AlertMessage';
-import ProtectedRoute from './ProtectedRoute';
+import Routes from './Routes';
 import AuthRoutes from './AuthRoutes';
 
 
@@ -28,7 +28,7 @@ class App extends React.Component {
             <React.Fragment>
                 <AlertMessage />
                 {isAuth ?
-                    <ProtectedRoute history={this.props.history} /> :
+                    <Routes history={this.props.history} /> :
                     <AuthRoutes history={this.props.history} />
                 }
             </React.Fragment>

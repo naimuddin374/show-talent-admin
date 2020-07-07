@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import userImg from '../assets/images/user2-160x160.jpg'
+import userImg from '../assets/images/logo.png'
 
 
 
@@ -39,25 +39,25 @@ class Sidebar extends Component {
                                             </Link>
                                         </li> */}
                                         <li className="nav-item">
-                                            <Link to="/posts/list/2" className="nav-link">
+                                            <Link to="/posts/list/2/newslink" className="nav-link">
                                                 <i className="far fa-circle nav-icon"></i>
                                                 <p>List of News link</p>
                                             </Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link to="/posts/list/3" className="nav-link">
+                                            <Link to="/posts/list/3/opinion" className="nav-link">
                                                 <i className="far fa-circle nav-icon"></i>
                                                 <p>List of Opinion</p>
                                             </Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link to="/posts/list/4" className="nav-link">
+                                            <Link to="/posts/list/4/video" className="nav-link">
                                                 <i className="far fa-circle nav-icon"></i>
                                                 <p>List of Video</p>
                                             </Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link to="/posts/list/5" className="nav-link">
+                                            <Link to="/posts/list/5/image" className="nav-link">
                                                 <i className="far fa-circle nav-icon"></i>
                                                 <p>List of Image</p>
                                             </Link>
@@ -67,7 +67,7 @@ class Sidebar extends Component {
 
 
                                 {/* Ebook */}
-                                <li className="nav-item has-treeview">
+                                {/* <li className="nav-item has-treeview">
                                     <a href="#blank" className="nav-link">
                                         <i className="nav-icon fas fa-tachometer-alt"></i>
                                         <p> Ebook <i className="right fas fa-angle-left"></i> </p>
@@ -80,10 +80,10 @@ class Sidebar extends Component {
                                             </Link>
                                         </li>
                                     </ul>
-                                </li>
+                                </li> */}
 
                                 {/* Ad */}
-                                <li className="nav-item has-treeview">
+                                {/* <li className="nav-item has-treeview">
                                     <a href="#blank" className="nav-link">
                                         <i className="nav-icon fas fa-tachometer-alt"></i>
                                         <p> Ad <i className="right fas fa-angle-left"></i> </p>
@@ -96,11 +96,11 @@ class Sidebar extends Component {
                                             </Link>
                                         </li>
                                     </ul>
-                                </li>
+                                </li> */}
 
 
                                 {/* Account */}
-                                <li className="nav-item has-treeview">
+                                {/* <li className="nav-item has-treeview">
                                     <a href="#blank" className="nav-link">
                                         <i className="nav-icon fas fa-tachometer-alt"></i>
                                         <p> Account <i className="right fas fa-angle-left"></i> </p>
@@ -113,11 +113,11 @@ class Sidebar extends Component {
                                             </Link>
                                         </li>
                                     </ul>
-                                </li>
+                                </li> */}
 
 
                                 {/* User */}
-                                <li className="nav-item has-treeview">
+                                {/* <li className="nav-item has-treeview">
                                     <a href="#blank" className="nav-link">
                                         <i className="nav-icon fas fa-users"></i>
                                         <p> User <i className="right fas fa-angle-left"></i> </p>
@@ -136,7 +136,7 @@ class Sidebar extends Component {
                                             </Link>
                                         </li>
                                     </ul>
-                                </li>
+                                </li> */}
 
 
                                 {/* Tools */}

@@ -4,13 +4,14 @@ import { login } from '../../store/actions/authActions'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 // import logo from '../assets/images/logo.png';
-import logo from '../assets/images/beatnik-time-white-logo.png';
+import logo from '../assets/images/logo-black.svg';
 import './Style.css';
 
 class Login extends React.Component {
     state = {
         email: "",
         password: "",
+        isAdmin: 1,
         isWait: false
     }
     changeHandler = event => {

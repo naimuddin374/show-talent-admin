@@ -64,8 +64,8 @@ class ProtectedRoute extends React.Component {
 
 
                             {/* Post route */}
-                            <Route path='/posts/edit/:id' exact component={PostEdit} history={this.props.history} />
-                            <Route path='/posts/list/:type' exact component={Post} history={this.props.history} />
+                            <Route path='/posts/edit/:id/:title' exact component={PostEdit} history={this.props.history} />
+                            <Route path='/posts/list/:type/:title' exact component={Post} history={this.props.history} />
 
 
                             {/* User route */}

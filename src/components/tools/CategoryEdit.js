@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux'
-import { storeData, updateData } from '../../store/actions/categoryActions'
-import { API_URL } from '../../store/actions/types';
-import Axios from 'axios'
+import { storeData, updateData, getCategoryDetail } from '../../store/actions/categoryActions'
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -17,16 +15,12 @@ class CategoryEdit extends Component {
             status: 1
         }
     }
-    componentDidMount() {
+    async componentDidMount() {
         let { id } = this.state
         if (id) {
-            Axios.get(`${API_URL}api/category/${id}`)
-                .then(res => {
-                    if (res.data.length !== 0) {
-                        let { name, status } = res.data[0]
-                        this.setState({ name, status })
-                    }
-                })
+            this.setState({
+                ...await this.props.getCategoryDetail(id)
+            })
         }
     }
     changeHandler = event => {
@@ -38,14 +32,9 @@ class CategoryEdit extends Component {
         event.preventDefault()
         this.setState({ isWait: true })
         let { id } = this.state
-        let isWait = id ? await this.props.updateData(this.state, id) : await this.props.storeData(this.state)
-        this.setState({ isWait })
-
-        if (isWait) {
-            setTimeout(() => {
-                this.props.history.push('/category')
-            }, 1000)
-        }
+        let response = id ? await this.props.updateData(this.state, id) : await this.props.storeData(this.state)
+        response && this.props.history.push('/category')
+        this.setState({ isWait: false })
     }
     render() {
         let { name, isWait } = this.state
@@ -88,4 +77,4 @@ class CategoryEdit extends Component {
 const mapStateToProps = state => ({
     common: state.common
 })
-export default connect(mapStateToProps, { updateData, storeData })(CategoryEdit)
+export default connect(mapStateToProps, { updateData, storeData, getCategoryDetail })(CategoryEdit)

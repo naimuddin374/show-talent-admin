@@ -86,7 +86,7 @@ class Post extends Component {
                                                     <tr key={item.id}>
                                                         <td>
                                                             {Number(item.status) === 0 &&
-                                                                <a href="#blank" className="btn btn-success btn-sm m-2" onClick={() => window.confirm('Are you sure?') && this.approveHandler(item.id)}>
+                                                                <a href="#blank" className="btn btn-success btn-sm" onClick={() => window.confirm('Are you sure?') && this.approveHandler(item.id)}>
                                                                     <i className="fa fa-check"></i>
                                                                 </a>}
 
@@ -94,9 +94,9 @@ class Post extends Component {
                                                                 <i className="fa fa-comments"></i>
                                                             </Link> */}
 
-                                                            {/* <Link className="btn btn-dark btn-sm mx-2" to={`/posts/edit/${item.id}`}>
+                                                            <Link className="btn btn-dark btn-sm my-2" to={`/posts/edit/${item.id}/${item.title}`}>
                                                                 <i className="fa fa-edit"></i>
-                                                            </Link> */}
+                                                            </Link>
 
 
                                                             {Number(item.status) === 0 &&
