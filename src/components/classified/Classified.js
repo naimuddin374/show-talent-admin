@@ -1,42 +1,31 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Loading from './../layout/Loading';
-import { approveData, rejectData, getAllPost } from '../../store/actions/postActions';
-import { getStatus, getVideoLink, getDateTime } from '../../util/helper';
+import Loading from '../layout/Loading';
+import { approveData, rejectData, getAllClassified } from '../../store/actions/classifiedActions';
+import { getStatus, getDateTime } from '../../util/helper';
 import renderHTML from 'react-render-html';
-import { ReactTinyLink } from 'react-tiny-link'
 import { API_URL } from '../../store/actions/types';
-import PostReject from './PostReject';
+import ClassifiedReject from './ClassifiedReject';
 
 
-class Post extends Component {
+class Classified extends Component {
     state = {
         data: [],
         loading: true,
-        type: Number(this.props.match.params.type),
         isOpen: false,
         dataId: ''
-    }
-    componentWillReceiveProps(props) {
-        let { type } = props.match.params
-        type = Number(type)
-        if (type !== this.state.type) {
-            this.onFetchData(type)
-        }
     }
     componentDidMount() {
         this.onFetchData()
     }
-    onFetchData = async (type = this.state.type) => {
+    onFetchData = async () => {
         this.setState({
             loading: true,
             data: [],
-            type
         })
-        let response = await this.props.getAllPost()
         this.setState({
-            data: response.length > 0 ? response.filter(item => item.type === type) : [],
+            data: await this.props.getAllClassified(),
             loading: false
         })
     }
@@ -50,11 +39,12 @@ class Post extends Component {
             isOpen: false,
             dataId: '',
         })
+        console.log('res')
         this.onFetchData()
     }
     render() {
 
-        let { data, loading, type, dataId, isOpen } = this.state
+        let { data, loading, dataId, isOpen } = this.state
         return (
             <Fragment>
                 <section className="content">
@@ -62,7 +52,7 @@ class Post extends Component {
                         <div className="col-12">
                             <div className="card">
                                 <div className="card-header">
-                                    <h3 className="card-title">List of {(type === 2 && 'News link') || (type === 3 && 'Opinion') || (type === 4 && 'Video') || (type === 5 && 'Image') || (type === 6 && 'Content')}</h3>
+                                    <h3 className="card-title">List of Classified</h3>
                                 </div>
                                 <div className="card-body">
                                     <table id="example2" className="table table-bordered table-hover">
@@ -72,9 +62,9 @@ class Post extends Component {
                                                 <th>Creator</th>
                                                 <th>Category</th>
                                                 <th>Title</th>
-                                                {type === 2 && <th>News Link</th>}
-                                                {type === 4 && <th>Video</th>}
-                                                {type === 5 && <th>Image</th>}
+                                                <th>Image</th>
+                                                <th>Contact</th>
+                                                <th>Address</th>
                                                 <th>Status</th>
                                                 <th>Created At</th>
                                                 <th>Reject Note</th>
@@ -96,14 +86,9 @@ class Post extends Component {
                                                                         <i className="fa fa-check"></i>
                                                                     </a>
 
-                                                                    {/* <Link className="btn btn-dark btn-sm mx-2" to={`/comment/post/${item.id}`}>
-                                                                <i className="fa fa-comments"></i>
-                                                            </Link> */}
-
-                                                                    <Link className="btn btn-dark btn-sm my-2" to={`/posts/edit/${item.id}/${item.title}`}>
+                                                                    {/* <Link className="btn btn-dark btn-sm my-2" to={`/posts/edit/${item.id}/${item.title}`}>
                                                                         <i className="fa fa-edit"></i>
-                                                                    </Link>
-
+                                                                    </Link> */}
 
 
                                                                     <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.setState({ isOpen: true, dataId: item.id })}>
@@ -112,25 +97,11 @@ class Post extends Component {
                                                                 </div>}
                                                         </td>
                                                         <td>{item.page ? item.page.name : item.user.name}</td>
-                                                        <td>{item.category.name}</td>
+                                                        <td>{item.category && item.category.name}</td>
                                                         <td>{item.title}</td>
-                                                        {item.type === 2 && <td>
-                                                            {(item.newslink && item.newslink.length > 20) && <a href={item.newslink} target='_blank' rel="noopener noreferrer">
-                                                                <ReactTinyLink
-                                                                    cardSize="small"
-                                                                    showGraphic={true}
-                                                                    maxLine={2}
-                                                                    minLine={1}
-                                                                    url={item.newslink}
-                                                                    loadSecureUrl={true}
-                                                                /></a>}
-                                                        </td>}
-                                                        {item.type === 4 && <td>
-                                                            <div className="post-video-area">
-                                                                <iframe title={item.id} className='post-video' src={`https://www.youtube.com/embed/${getVideoLink(item.video)}`} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                                                            </div>
-                                                        </td>}
-                                                        {item.type === 5 && <td>{item.image && <img src={API_URL + item.image} alt='Pic' width='100' />}</td>}
+                                                        <td>{item.image && <img src={API_URL + item.image} alt='Pic' width='100' />}</td>
+                                                        <td>{item.contact}<br />{item.email}</td>
+                                                        <td>{item.address}</td>
                                                         <td>{getStatus(item.status)}</td>
                                                         <td>{getDateTime(item.created_at)}</td>
                                                         <td>{item.reject_note}</td>
@@ -144,7 +115,7 @@ class Post extends Component {
                     </div>
                 </section>
 
-                {isOpen && <PostReject
+                {isOpen && <ClassifiedReject
                     isOpen={isOpen}
                     closeHandler={() => this.setState({ isOpen: false, dataId: '' })}
                     actionIsDone={this.actionIsDone.bind(this)}
@@ -154,4 +125,4 @@ class Post extends Component {
         )
     }
 }
-export default connect(null, { approveData, rejectData, getAllPost })(Post)
+export default connect(null, { approveData, rejectData, getAllClassified })(Classified)

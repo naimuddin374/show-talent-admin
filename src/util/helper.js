@@ -4,9 +4,9 @@ import Moment from 'react-moment';
 
 export const getStatus = status => {
     switch (Number(status)) {
-        case 0: return 'Pending'
-        case 1: return 'Approve'
-        case 2: return 'Rejected'
+        case 0: return <span className='text-default'>Pending</span>
+        case 1: return <span className='text-success'>Approve</span>
+        case 2: return <span className='text-danger'>Rejected</span>
         default: return status
     }
 }

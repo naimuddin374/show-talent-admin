@@ -8,6 +8,7 @@ import { SET_USER } from './store/actions/types';
 import { BrowserRouter } from 'react-router-dom';
 import History from './util/History'
 import setAuthToken from './util/setAuthToken';
+import { refreshToken } from './store/actions/authActions';
 
 
 let token = localStorage.getItem('authToken');
@@ -17,6 +18,7 @@ if (token) {
         type: SET_USER,
         payload: token
     })
+    refreshToken(History)
 }
 
 ReactDOM.render(<Provider store={store}>

@@ -1,4 +1,4 @@
-import { SET_MESSAGE, API_URL, SET_USER, FORGOT_PASS_STATUS, RESET_PASSWORD } from './types'
+import { SET_MESSAGE, API_URL, SET_USER } from './types'
 import Axios from 'axios'
 import setAuthToken from '../../util/setAuthToken'
 
@@ -41,7 +41,6 @@ export const login = data => async dispatch => {
 // Logout
 export const logout = history => dispatch => {
     localStorage.removeItem('authToken')
-    history.push(`/`)
     window.location.reload();
     dispatch({
         type: SET_USER,
@@ -57,6 +56,26 @@ export const logout = history => dispatch => {
             type: 'success',
         }
     })
+}
+
+// Refresh token
+export const refreshToken = history => {
+    Axios.get(`${API_URL}api/auth/token/refresh`)
+        .then(res => {
+            if (res.data.token) {
+                let token = res.data.token
+            } else {
+                localStorage.removeItem('authToken')
+                history.push('/')
+                window.location.reload();
+            }
+        })
+        .catch(err => {
+            console.log('err', err.response)
+            localStorage.removeItem('authToken')
+            history.push('/')
+            window.location.reload();
+        })
 }
 
 

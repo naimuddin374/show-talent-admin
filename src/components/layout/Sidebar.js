@@ -66,6 +66,24 @@ class Sidebar extends Component {
                                 </li>
 
 
+                                {/* Classified */}
+                                <li className="nav-item has-treeview">
+                                    <a href="#blank" className="nav-link">
+                                        <i className="nav-icon fas fa-tachometer-alt"></i>
+                                        <p> Classified <i className="right fas fa-angle-left"></i> </p>
+                                    </a>
+                                    <ul className="nav nav-treeview">
+                                        <li className="nav-item">
+                                            <Link to="/classified/list" className="nav-link">
+                                                <i className="far fa-circle nav-icon"></i>
+                                                <p>List of Classified</p>
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                </li>
+
+
+
                                 {/* Ebook */}
                                 {/* <li className="nav-item has-treeview">
                                     <a href="#blank" className="nav-link">

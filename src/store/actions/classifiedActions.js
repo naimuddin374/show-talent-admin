@@ -3,8 +3,8 @@ import Axios from 'axios'
 
 
 // Get Data
-export const getAllPost = () => async dispatch => {
-    return Axios.get(`${API_URL}api/admin/post`)
+export const getAllClassified = () => async dispatch => {
+    return Axios.get(`${API_URL}api/admin/classified`)
         .then(res => {
             return res.data
         })
@@ -21,8 +21,8 @@ export const getAllPost = () => async dispatch => {
 }
 
 // Get Detail Data
-export const getPostDetail = (id) => async dispatch => {
-    return Axios.get(`${API_URL}api/post/${id}`)
+export const getClassifiedDetail = (id) => async dispatch => {
+    return Axios.get(`${API_URL}api/classified/${id}`)
         .then(res => {
             return res.data
         })
@@ -40,7 +40,7 @@ export const getPostDetail = (id) => async dispatch => {
 
 // Data Update
 export const updateData = (data, id) => async dispatch => {
-    return Axios.put(`${API_URL}api/post/${id}`, data)
+    return Axios.put(`${API_URL}api/classified/${id}`, data)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -63,8 +63,8 @@ export const updateData = (data, id) => async dispatch => {
 }
 
 // Data Delete
-export const deleteData = id => async dispatch => {
-    return Axios.delete(`${API_URL}api/post/${id}`)
+export const deleteData = id => dispatch => {
+    Axios.delete(`${API_URL}api/classified/${id}`)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -72,7 +72,6 @@ export const deleteData = id => async dispatch => {
                     message: res.data.message,
                 }
             })
-            return true
         })
         .catch(err => {
             dispatch({
@@ -82,13 +81,12 @@ export const deleteData = id => async dispatch => {
                     type: 'error',
                 }
             })
-            return false
         })
 }
 
 // Data Approve
 export const approveData = id => async dispatch => {
-    return Axios.put(`${API_URL}api/post/approve/${id}`)
+    return Axios.put(`${API_URL}api/classified/approve/${id}`)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -112,7 +110,7 @@ export const approveData = id => async dispatch => {
 
 // Data Reject
 export const rejectData = (id, data) => async dispatch => {
-    return Axios.put(`${API_URL}api/post/reject/${id}`, data)
+    return Axios.put(`${API_URL}api/classified/reject/${id}`, data)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,

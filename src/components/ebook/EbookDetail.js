@@ -106,8 +106,8 @@ class EbookDetail extends Component {
                                                     </td>
                                                     <td>{getStatus(data.status)}</td>
                                                     <td>{getDateTime(data.created_at)}</td>
-                                                    <td>{data.front_image && <img src={API_URL + data.front_image} width='100' />}</td>
-                                                    <td>{data.back_image && <img src={API_URL + data.back_image} width='100' />}</td>
+                                                    <td>{data.front_image && <img src={API_URL + data.front_image} width='100' alt='Cover' />}</td>
+                                                    <td>{data.back_image && <img src={API_URL + data.back_image} width='100' alt='Cover' />}</td>
                                                 </tr>}
                                         </tbody>
                                     </table>

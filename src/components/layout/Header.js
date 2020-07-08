@@ -11,7 +11,7 @@ class Header extends Component {
         }
     }
     render() {
-        let { user, isOpen } = this.state
+        // let { user, isOpen } = this.state
         return (
             <Fragment>
                 <nav className="main-header navbar navbar-expand navbar-white navbar-light">

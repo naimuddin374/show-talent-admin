@@ -1,4 +1,4 @@
-import { SET_USER, FORGOT_PASS_STATUS, RESET_PASSWORD } from '../actions/types'
+import { SET_USER } from '../actions/types'
 import jwtDecode from 'jwt-decode';
 
 const init = {
