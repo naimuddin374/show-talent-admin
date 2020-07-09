@@ -39,7 +39,6 @@ class Classified extends Component {
             isOpen: false,
             dataId: '',
         })
-        console.log('res')
         this.onFetchData()
     }
     render() {
@@ -86,9 +85,9 @@ class Classified extends Component {
                                                                         <i className="fa fa-check"></i>
                                                                     </a>
 
-                                                                    {/* <Link className="btn btn-dark btn-sm my-2" to={`/posts/edit/${item.id}/${item.title}`}>
+                                                                    <Link className="btn btn-dark btn-sm my-2" to={`/classified/edit/${item.id}/${item.title}`}>
                                                                         <i className="fa fa-edit"></i>
-                                                                    </Link> */}
+                                                                    </Link>
 
 
                                                                     <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.setState({ isOpen: true, dataId: item.id })}>

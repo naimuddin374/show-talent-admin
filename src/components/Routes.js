@@ -19,6 +19,7 @@ import Account from './account/Account';
 import Comment from './comment/Comment';
 import EbookDetail from './ebook/EbookDetail';
 import Classified from './classified/Classified';
+import ClassifiedEdit from './classified/ClassifiedEdit';
 
 
 
@@ -69,7 +70,7 @@ class ProtectedRoute extends React.Component {
                             <Route path='/posts/list/:type/:title' exact component={Post} history={this.props.history} />
 
                             {/* Classified route */}
-                            <Route path='/classified/edit/:id/:title' exact component={PostEdit} history={this.props.history} />
+                            <Route path='/classified/edit/:id/:title' exact component={ClassifiedEdit} history={this.props.history} />
                             <Route path='/classified/list' exact component={Classified} history={this.props.history} />
 
 
