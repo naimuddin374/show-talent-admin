@@ -126,3 +126,28 @@ export const rejectData = id => dispatch => {
             })
         })
 }
+
+
+// Update Cover Photo 
+export const updateCoverPhoto = (data, id) => async dispatch => {
+    return Axios.put(`${API_URL}api/ebook/cover/photo/${id}`, data)
+        .then(res => {
+            dispatch({
+                type: SET_MESSAGE,
+                payload: {
+                    message: res.data.message,
+                }
+            })
+            return true
+        })
+        .catch(err => {
+            dispatch({
+                type: SET_MESSAGE,
+                payload: {
+                    message: err.response && err.response.data.message,
+                    type: 'error',
+                }
+            })
+            return false
+        })
+}

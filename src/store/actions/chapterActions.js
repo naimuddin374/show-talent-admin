@@ -2,6 +2,24 @@ import { SET_MESSAGE, API_URL } from './types'
 import Axios from 'axios'
 
 
+// Get Detail
+export const getChapterDetail = (id) => async dispatch => {
+    return Axios.get(`${API_URL}api/chapter/${id}`)
+        .then(res => {
+            return res.data
+        })
+        .catch(err => {
+            dispatch({
+                type: SET_MESSAGE,
+                payload: {
+                    message: err.response.data.message,
+                    type: 'error',
+                }
+            })
+            return false
+        })
+}
+
 // Data Update
 export const updateData = (data, id) => async dispatch => {
     return Axios.put(`${API_URL}api/chapter/${id}`, data)
@@ -49,7 +67,7 @@ export const deleteData = id => dispatch => {
 }
 
 // Data Approve
-export const approveData = id => dispatch => {
+export const chapterApprove = id => dispatch => {
     Axios.put(`${API_URL}api/chapter/approve/${id}`)
         .then(res => {
             dispatch({
@@ -71,7 +89,7 @@ export const approveData = id => dispatch => {
 }
 
 // Data Reject
-export const rejectData = id => dispatch => {
+export const chapterReject = id => dispatch => {
     Axios.put(`${API_URL}api/chapter/reject/${id}`)
         .then(res => {
             dispatch({

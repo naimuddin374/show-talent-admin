@@ -20,6 +20,9 @@ import Comment from './comment/Comment';
 import EbookDetail from './ebook/EbookDetail';
 import Classified from './classified/Classified';
 import ClassifiedEdit from './classified/ClassifiedEdit';
+import EbookEdit from './ebook/EbookEdit';
+import EbookCoverPhoto from './ebook/EbookCoverPhoto';
+import ChapterEdit from './ebook/ChapterEdit';
 
 
 
@@ -52,10 +55,12 @@ class ProtectedRoute extends React.Component {
 
 
                             {/* Ebook */}
-                            {/* <Route path='/ebook/edit/:id' exact component={EbookEdit} history={this.props.history} /> */}
                             {/* <Route path='/ebook/detail/:id' exact component={CategoryEdit} history={this.props.history} /> */}
-                            <Route path='/ebook' exact component={EbookContent} history={this.props.history} />
-                            <Route path='/ebook/detail/:dataId' exact component={EbookDetail} history={this.props.history} />
+                            <Route path='/ebook/list' exact component={EbookContent} history={this.props.history} />
+                            <Route path='/ebook/edit/:dataId/:title' exact component={EbookEdit} history={this.props.history} />
+                            <Route path='/ebook/detail/:dataId/:title' exact component={EbookDetail} history={this.props.history} />
+                            <Route path='/ebook/cover/photo/:dataId/:title' exact component={EbookCoverPhoto} history={this.props.history} />
+                            <Route path='/ebook/chapter/edit/:dataId/:title' exact component={ChapterEdit} history={this.props.history} />
 
 
 

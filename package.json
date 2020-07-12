@@ -1,7 +1,7 @@
 {
   "name": "my-app",
   "homepage": "https://showtalent-admin.btlbd.tk/",
-  "version": "0.1.0",
+  "version": "1.1.1",
   "private": true,
   "dependencies": {
     "axios": "^0.19.1",

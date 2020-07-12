@@ -76,20 +76,21 @@ class EbookContent extends Component {
                                                 </tr> : Object.keys(data).length !== 0 && data.map(item =>
                                                     <tr key={item.id}>
                                                         <td>
-                                                            {/* {Number(item.status) === 0 &&
-                                                                <a href="#blank" className="btn btn-success btn-sm" onClick={() => this.approveHandler(item.id)}>
-                                                                    <i className="fa fa-check"></i>
-                                                                </a>} */}
-                                                            <Link className="btn btn-dark btn-sm mx-2" to={`/ebook/edit/${item.id}`}>
-                                                                <i className="fa fa-edit"></i>
-                                                            </Link>
-                                                            <Link className="btn btn-dark btn-sm mx-2" to={`/ebook/detail/${item.id}`}>
-                                                                <i className="fa fa-eye"></i>
-                                                            </Link>
-                                                            {/* {Number(item.status) === 0 &&
-                                                                <a href="#blank" className="btn btn-danger btn-sm" onClick={() => this.rejectHandler(item.id)}>
-                                                                    <i className="fa fa-times"></i>
-                                                                </a>} */}
+                                                            {Number(item.status) === 0 &&
+                                                                <span>
+                                                                    <a href="#blank" className="btn btn-success btn-sm" onClick={() => this.approveHandler(item.id)}>
+                                                                        <i className="fa fa-check"></i>
+                                                                    </a>
+                                                                    <Link className="btn btn-dark btn-sm my-2" to={`/ebook/edit/${item.id}/${item.name}`}>
+                                                                        <i className="fa fa-edit"></i>
+                                                                    </Link>
+                                                                    <Link className="btn btn-dark btn-sm my-2" to={`/ebook/detail/${item.id}/${item.name}`}>
+                                                                        <i className="fa fa-eye"></i>
+                                                                    </Link>
+                                                                    <a href="#blank" className="btn btn-danger btn-sm" onClick={() => this.rejectHandler(item.id)}>
+                                                                        <i className="fa fa-times"></i>
+                                                                    </a>
+                                                                </span>}
                                                         </td>
                                                         <td>{item.page ? item.page.name : item.user.name}</td>
                                                         <td>{item.category.name}</td>
@@ -100,7 +101,7 @@ class EbookContent extends Component {
                                                         <td>{item.summary}</td>
                                                         <td>{item.author_summary}</td>
                                                         <td>
-                                                            <Link to={`/ebook/detail/${item.id}`}>
+                                                            <Link to={`/ebook/detail/${item.id}/${item.name}`}>
                                                                 {item.chapter.length}
                                                             </Link>
                                                         </td>
