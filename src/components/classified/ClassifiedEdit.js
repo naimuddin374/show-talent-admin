@@ -24,7 +24,6 @@ class ClassifiedEdit extends Component {
             id: props.match.params.id || null,
             page_id: 0,
             type: 1,
-            status: 0,
             title: '',
             description: '',
             contact: '',
@@ -45,11 +44,10 @@ class ClassifiedEdit extends Component {
         if (id) {
             let response = await this.props.getClassifiedDetail(id)
             if (Object.keys(response).length !== 0) {
-                let { page_id, type, status, title, description, contact, email, price, city_id, currency, address, image } = response
+                let { page_id, type, title, description, contact, email, price, city_id, currency, address, image } = response
                 this.setState({
                     page_id,
                     type,
-                    status,
                     title,
                     description,
                     contact,

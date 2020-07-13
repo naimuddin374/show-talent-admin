@@ -31,7 +31,6 @@ class PostEdit extends Component {
             video: '',
             type: '',
             image: '',
-            status: '',
             imagePath: null,
             categories: [],
             validation: {},
@@ -43,7 +42,7 @@ class PostEdit extends Component {
         if (id) {
             let response = await this.props.getPostDetail(id)
             if (Object.keys(response).length > 0) {
-                let { category_id, title, description, newslink, video, type, image, status } = response
+                let { category_id, title, description, newslink, video, type, image } = response
                 this.setState({
                     category_id,
                     title,
@@ -51,7 +50,6 @@ class PostEdit extends Component {
                     newslink,
                     video,
                     type,
-                    status,
                     imagePath: image ? API_URL + image : null,
                     categories: await this.props.getAllCategory()
                 })
