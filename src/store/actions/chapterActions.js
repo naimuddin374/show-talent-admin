@@ -45,8 +45,8 @@ export const updateData = (data, id) => async dispatch => {
 }
 
 // Data Delete
-export const deleteData = id => dispatch => {
-    Axios.delete(`${API_URL}api/chapter/${id}`)
+export const deleteData = id => async dispatch => {
+    return Axios.delete(`${API_URL}api/chapter/${id}`)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -54,6 +54,7 @@ export const deleteData = id => dispatch => {
                     message: res.data.message,
                 }
             })
+            return true
         })
         .catch(err => {
             dispatch({
@@ -63,12 +64,13 @@ export const deleteData = id => dispatch => {
                     type: 'error',
                 }
             })
+            return false
         })
 }
 
 // Data Approve
-export const chapterApprove = id => dispatch => {
-    Axios.put(`${API_URL}api/chapter/approve/${id}`)
+export const chapterApprove = id => async dispatch => {
+    return Axios.put(`${API_URL}api/chapter/approve/${id}`)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -76,6 +78,7 @@ export const chapterApprove = id => dispatch => {
                     message: res.data.message,
                 }
             })
+            return true
         })
         .catch(err => {
             dispatch({
@@ -85,12 +88,13 @@ export const chapterApprove = id => dispatch => {
                     type: 'error',
                 }
             })
+            return false
         })
 }
 
 // Data Reject
-export const chapterReject = id => dispatch => {
-    Axios.put(`${API_URL}api/chapter/reject/${id}`)
+export const rejectData = (id, data) => async dispatch => {
+    return Axios.put(`${API_URL}api/chapter/reject/${id}`, data)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -98,6 +102,7 @@ export const chapterReject = id => dispatch => {
                     message: res.data.message,
                 }
             })
+            return true
         })
         .catch(err => {
             dispatch({
@@ -107,5 +112,6 @@ export const chapterReject = id => dispatch => {
                     type: 'error',
                 }
             })
+            return false
         })
 }

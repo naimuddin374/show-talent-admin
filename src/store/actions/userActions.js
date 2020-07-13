@@ -51,8 +51,8 @@ export const updateData = (data, id) => async dispatch => {
 }
 
 // Data Delete
-export const deleteData = id => dispatch => {
-    Axios.delete(`${API_URL}api/user/${id}`)
+export const deleteData = id => async dispatch => {
+    return Axios.delete(`${API_URL}api/user/${id}`)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -60,6 +60,7 @@ export const deleteData = id => dispatch => {
                     message: res.data.message,
                 }
             })
+            return true
         })
         .catch(err => {
             dispatch({
@@ -69,5 +70,6 @@ export const deleteData = id => dispatch => {
                     type: 'error',
                 }
             })
+            return false
         })
 }

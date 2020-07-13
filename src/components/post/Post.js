@@ -77,66 +77,66 @@ class Post extends Component {
                                                 {type === 5 && <th>Image</th>}
                                                 <th>Status</th>
                                                 <th>Created At</th>
-                                                <th>Reject Note</th>
-                                                <th>Description</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            {loading ?
+
+                                        {loading ?
+                                            <tbody>
                                                 <tr>
                                                     <td colSpan="10">
                                                         <Loading />
                                                     </td>
-                                                </tr> : data.length > 0 && data.map(item =>
-                                                    <tr key={item.id}>
-                                                        <td>
-                                                            {Number(item.status) === 0 &&
-                                                                <div>
-                                                                    <a href="#blank" className="btn btn-success btn-sm" onClick={() => window.confirm('Are you sure?') && this.approveHandler(item.id)}>
-                                                                        <i className="fa fa-check"></i>
-                                                                    </a>
+                                                </tr></tbody> : data.length > 0 && data.map(item =>
+                                                    <tbody key={item.id}>
+                                                        <tr>
+                                                            <td>
+                                                                {Number(item.status) === 0 &&
+                                                                    <div>
+                                                                        <a href="#blank" className="btn btn-success btn-sm" onClick={() => window.confirm('Are you sure?') && this.approveHandler(item.id)}>
+                                                                            <i className="fa fa-check"></i>
+                                                                        </a>
 
-                                                                    {/* <Link className="btn btn-dark btn-sm mx-2" to={`/comment/post/${item.id}`}>
-                                                                <i className="fa fa-comments"></i>
-                                                            </Link> */}
+                                                                        {/* <Link className="btn btn-dark btn-sm mx-2" to={`/comment/post/${item.id}`}>
+                                                                                <i className="fa fa-comments"></i>
+                                                                            </Link> */}
 
-                                                                    <Link className="btn btn-dark btn-sm my-2" to={`/posts/edit/${item.id}/${item.title}`}>
-                                                                        <i className="fa fa-edit"></i>
-                                                                    </Link>
+                                                                        <Link className="btn btn-dark btn-sm my-2" to={`/posts/edit/${item.id}/${item.title}`}>
+                                                                            <i className="fa fa-edit"></i>
+                                                                        </Link>
 
 
 
-                                                                    <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.setState({ isOpen: true, dataId: item.id })}>
-                                                                        <i className="fa fa-times"></i>
-                                                                    </a>
-                                                                </div>}
-                                                        </td>
-                                                        <td>{item.page ? item.page.name : item.user.name}</td>
-                                                        <td>{item.category.name}</td>
-                                                        <td>{item.title}</td>
-                                                        {item.type === 2 && <td>
-                                                            {(item.newslink && item.newslink.length > 20) && <a href={item.newslink} target='_blank' rel="noopener noreferrer">
-                                                                <ReactTinyLink
-                                                                    cardSize="small"
-                                                                    showGraphic={true}
-                                                                    maxLine={2}
-                                                                    minLine={1}
-                                                                    url={item.newslink}
-                                                                    loadSecureUrl={true}
-                                                                /></a>}
-                                                        </td>}
-                                                        {item.type === 4 && <td>
-                                                            <div className="post-video-area">
-                                                                <iframe title={item.id} className='post-video' src={`https://www.youtube.com/embed/${getVideoLink(item.video)}`} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-                                                            </div>
-                                                        </td>}
-                                                        {item.type === 5 && <td>{item.image && <img src={API_URL + item.image} alt='Pic' width='100' />}</td>}
-                                                        <td>{getStatus(item.status)}</td>
-                                                        <td>{getDateTime(item.created_at)}</td>
-                                                        <td>{item.reject_note}</td>
-                                                        <td>{item.description && renderHTML(item.description)}</td>
-                                                    </tr>)}
-                                        </tbody>
+                                                                        <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.setState({ isOpen: true, dataId: item.id })}>
+                                                                            <i className="fa fa-times"></i>
+                                                                        </a>
+                                                                    </div>}
+                                                            </td>
+                                                            <td>{item.page ? item.page.name : item.user.name}</td>
+                                                            <td>{item.category.name}</td>
+                                                            <td>{item.title}</td>
+                                                            {item.type === 2 && <td>
+                                                                {(item.newslink && item.newslink.length > 20) && <a href={item.newslink} target='_blank' rel="noopener noreferrer">
+                                                                    <ReactTinyLink
+                                                                        cardSize="small"
+                                                                        showGraphic={true}
+                                                                        maxLine={2}
+                                                                        minLine={1}
+                                                                        url={item.newslink}
+                                                                        loadSecureUrl={true}
+                                                                    /></a>}
+                                                            </td>}
+                                                            {item.type === 4 && <td>
+                                                                <div className="post-video-area">
+                                                                    <iframe title={item.id} className='post-video' src={`https://www.youtube.com/embed/${getVideoLink(item.video)}`} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                                                                </div>
+                                                            </td>}
+                                                            {item.type === 5 && <td>{item.image && <img src={API_URL + item.image} alt='Pic' width='100' />}</td>}
+                                                            <td>{getStatus(item.status)}</td>
+                                                            <td>{getDateTime(item.created_at)}</td>
+                                                        </tr>
+                                                        {item.description && <tr><td colSpan="10">{renderHTML(item.description)}</td></tr>}
+                                                        {item.reject_note && <tr><td className='text-danger'>Reject Note:</td><td colSpan="10">{item.reject_note}</td></tr>}
+                                                    </tbody>)}
                                     </table>
                                 </div>
                             </div>

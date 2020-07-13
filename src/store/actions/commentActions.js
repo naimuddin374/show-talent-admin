@@ -27,8 +27,8 @@ export const updateData = (data, id) => async dispatch => {
 }
 
 // Data Delete
-export const deleteData = id => dispatch => {
-    Axios.delete(`${API_URL}api/comment/${id}`)
+export const deleteData = id => async dispatch => {
+    return Axios.delete(`${API_URL}api/comment/${id}`)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -36,6 +36,7 @@ export const deleteData = id => dispatch => {
                     message: res.data.message,
                 }
             })
+            return true
         })
         .catch(err => {
             dispatch({
@@ -45,12 +46,13 @@ export const deleteData = id => dispatch => {
                     type: 'error',
                 }
             })
+            return false
         })
 }
 
 // Data Approve
-export const approveData = id => dispatch => {
-    Axios.put(`${API_URL}api/comment/approve/${id}`)
+export const approveData = id => async dispatch => {
+    return Axios.put(`${API_URL}api/comment/approve/${id}`)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -58,6 +60,7 @@ export const approveData = id => dispatch => {
                     message: res.data.message,
                 }
             })
+            return true
         })
         .catch(err => {
             dispatch({
@@ -67,12 +70,13 @@ export const approveData = id => dispatch => {
                     type: 'error',
                 }
             })
+            return false
         })
 }
 
 // Data Reject
-export const rejectData = id => dispatch => {
-    Axios.put(`${API_URL}api/comment/reject/${id}`)
+export const rejectData = id => async dispatch => {
+    return Axios.put(`${API_URL}api/comment/reject/${id}`)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -80,6 +84,7 @@ export const rejectData = id => dispatch => {
                     message: res.data.message,
                 }
             })
+            return true
         })
         .catch(err => {
             dispatch({
@@ -89,5 +94,6 @@ export const rejectData = id => dispatch => {
                     type: 'error',
                 }
             })
+            return false
         })
 }

@@ -2,19 +2,24 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 import { API_URL } from '../../store/actions/types'
 import Loading from '../layout/Loading';
-import { approveData, rejectData } from '../../store/actions/ebookActions';
-import { chapterApprove, chapterReject } from '../../store/actions/chapterActions';
+import { approveData } from '../../store/actions/ebookActions';
+import { chapterApprove } from '../../store/actions/chapterActions';
 import { getStatus, getDateTime } from '../../util/helper';
 import { getBookDetail } from '../../store/actions/ebookActions';
 import { Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
+import BookReject from './BookReject';
+import ChapterReject from './ChapterReject';
 
 
 class EbookDetail extends Component {
     state = {
         data: [],
         loading: true,
-        dataId: this.props.match.params.dataId
+        dataId: this.props.match.params.dataId,
+        isOpen: false,
+        isChapterOpen: false,
+        chapterId: 0
     }
     componentDidMount() {
         this.onFetchData()
@@ -31,27 +36,23 @@ class EbookDetail extends Component {
         })
     }
     approveHandler = async id => {
-        let { approveData } = this.props
-        approveData(id)
-        await this.onFetchData()
-    }
-    rejectHandler = async id => {
-        let { rejectData } = this.props
-        rejectData(id)
-        await this.onFetchData()
+        await this.props.approveData(id)
+        this.onFetchData()
     }
     chapterApproveHandler = async id => {
-        let { chapterApprove } = this.props
-        chapterApprove(id)
-        await this.onFetchData()
+        await this.props.chapterApprove(id)
+        this.onFetchData()
     }
-    chapterRejectHandler = async id => {
-        let { chapterReject } = this.props
-        chapterReject(id)
-        await this.onFetchData()
+    actionIsDone = () => {
+        this.setState({
+            isOpen: false,
+            isChapterOpen: false,
+            chapterId: 0
+        })
+        this.onFetchData()
     }
     render() {
-        let { data, loading } = this.state
+        let { data, loading, isOpen, dataId, isChapterOpen, chapterId } = this.state
         return (
             <Fragment>
                 <section className="content">
@@ -71,33 +72,32 @@ class EbookDetail extends Component {
                                                 <th>Name</th>
                                                 <th>Author Name</th>
                                                 <th>Publication Date</th>
-                                                <th>Preface</th>
-                                                <th>Summary</th>
-                                                <th>Author Summary</th>
                                                 <th>Status</th>
                                                 <th>Created At</th>
                                                 <th>Front Image</th>
                                                 <th>Back Image</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            {loading ?
+                                        {loading ?
+                                            <tbody>
                                                 <tr>
                                                     <td colSpan="10">
                                                         <Loading />
                                                     </td>
-                                                </tr> : Object.keys(data).length !== 0 &&
-                                                <tr key={data.id}>
+                                                </tr>
+                                            </tbody> : Object.keys(data).length !== 0 &&
+                                            <tbody key={data.id}>
+                                                <tr>
                                                     <td>
                                                         {Number(data.status) === 0 &&
                                                             <span>
                                                                 <a href="#blank" className="btn btn-success btn-sm" onClick={() => this.approveHandler(data.id)}>
                                                                     <i className="fa fa-check"></i>
                                                                 </a>
-                                                                <Link className="btn btn-dark btn-sm my-2" to={`/ebook/edit/${data.id}/${data.name}`}>
+                                                                <Link className="btn btn-dark btn-sm" to={`/ebook/edit/${data.id}/${data.name}`}>
                                                                     <i className="fa fa-edit"></i>
                                                                 </Link>
-                                                                <a href="#blank" className="btn btn-danger btn-sm" onClick={() => this.rejectHandler(data.id)}>
+                                                                <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.setState({ isOpen: true })}>
                                                                     <i className="fa fa-times"></i>
                                                                 </a>
                                                             </span>}
@@ -107,19 +107,21 @@ class EbookDetail extends Component {
                                                     <td>{data.name}</td>
                                                     <td>{data.author_name}</td>
                                                     <td>{data.publication_date}</td>
-                                                    <td>{data.preface}</td>
-                                                    <td>{data.summary}</td>
-                                                    <td>{data.author_summary}</td>
                                                     <td>{getStatus(data.status)}</td>
                                                     <td>{getDateTime(data.created_at)}</td>
                                                     <td>{data.front_image && <img src={API_URL + data.front_image} width='100' alt='Cover' />}</td>
                                                     <td>{data.back_image && <img src={API_URL + data.back_image} width='100' alt='Cover' />}</td>
-                                                </tr>}
-                                        </tbody>
+                                                </tr>
+                                                {data.preface && <tr><td>Preface:</td><td colSpan="10">{data.preface}</td></tr>}
+                                                {data.summary && <tr><td>Summary:</td><td colSpan="10">{data.summary}</td></tr>}
+                                                {data.author_summary && <tr><td>Author Summary:</td><td colSpan="10">{data.author_summary}</td></tr>}
+                                                {data.reject_note && <tr><td className='text-danger'>Reject Note:</td><td colSpan="10">{data.reject_note}</td></tr>}
+                                            </tbody>}
+
                                     </table>
 
                                     <div className="card-header">
-                                        <h3 className="card-title">List of Chapter</h3>
+                                        <h3 className="card-title"><b>List of Chapter</b></h3>
                                     </div>
                                     <table id="example2" className="table table-bordered table-hover">
                                         <thead>
@@ -129,26 +131,26 @@ class EbookDetail extends Component {
                                                 <th>Name</th>
                                                 <th>Status</th>
                                                 <th>Created At</th>
-                                                <th>Ebook</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            {loading ?
+
+                                        {loading ?
+                                            <tbody>
                                                 <tr>
                                                     <td colSpan="10">
                                                         <Loading />
                                                     </td>
-                                                </tr> : data.chapter.length > 0 && data.chapter.map(item => <tr key={data.id}>
+                                                </tr> </tbody> : data.chapter.length > 0 && data.chapter.map(item => <tbody key={item.id}> <tr>
                                                     <td>
                                                         {Number(item.status) === 0 &&
                                                             <span>
                                                                 <a href="#blank" className="btn btn-success btn-sm" onClick={() => window.confirm('Are you sure?') && this.chapterApproveHandler(item.id)}>
                                                                     <i className="fa fa-check"></i>
                                                                 </a>
-                                                                <Link className="btn btn-dark btn-sm my-2" to={`/ebook/chapter/edit/${item.id}/${item.name}`}>
+                                                                <Link className="btn btn-dark btn-sm" to={`/ebook/chapter/edit/${item.id}/${item.name}`}>
                                                                     <i className="fa fa-edit"></i>
                                                                 </Link>
-                                                                <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.chapterReject(item.id)}>
+                                                                <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.setState({ isChapterOpen: true, chapterId: item.id })}>
                                                                     <i className="fa fa-times"></i>
                                                                 </a>
                                                             </span>}
@@ -157,17 +159,30 @@ class EbookDetail extends Component {
                                                     <td>{item.name}</td>
                                                     <td>{getStatus(item.status)}</td>
                                                     <td>{getDateTime(item.created_at)}</td>
-                                                    <td>{item.description && renderHTML(item.description)}</td>
-                                                </tr>)}
-                                        </tbody>
+                                                </tr>
+                                                    {item.description && <tr><td colSpan='10'>{renderHTML(item.description)}</td></tr>}
+                                                    {item.reject_note && <tr><td className='text-danger'>Reject Note:</td><td colSpan="10">{item.reject_note}</td></tr>}
+                                                </tbody>)}
                                     </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
+                {isOpen && <BookReject
+                    isOpen={isOpen}
+                    closeHandler={() => this.setState({ isOpen: false })}
+                    actionIsDone={this.actionIsDone.bind(this)}
+                    dataId={dataId}
+                />}
+                {isChapterOpen && chapterId && <ChapterReject
+                    isOpen={isChapterOpen}
+                    closeHandler={() => this.setState({ isChapterOpen: false, chapterId: 0 })}
+                    actionIsDone={this.actionIsDone.bind(this)}
+                    dataId={chapterId}
+                />}
             </Fragment>
         )
     }
 }
-export default connect(null, { approveData, rejectData, chapterApprove, chapterReject, getBookDetail })(EbookDetail)
+export default connect(null, { approveData, chapterApprove, getBookDetail })(EbookDetail)

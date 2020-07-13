@@ -42,7 +42,6 @@ class Classified extends Component {
         this.onFetchData()
     }
     render() {
-
         let { data, loading, dataId, isOpen } = this.state
         return (
             <Fragment>
@@ -67,17 +66,18 @@ class Classified extends Component {
                                                 <th>Status</th>
                                                 <th>Created At</th>
                                                 <th>Reject Note</th>
-                                                <th>Description</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            {loading ?
+                                        {loading ?
+                                            <tbody>
                                                 <tr>
                                                     <td colSpan="10">
                                                         <Loading />
                                                     </td>
-                                                </tr> : data.length > 0 && data.map(item =>
-                                                    <tr key={item.id}>
+                                                </tr>
+                                            </tbody> : data.length > 0 && data.map(item =>
+                                                <tbody key={item.id}>
+                                                    <tr>
                                                         <td>
                                                             {Number(item.status) === 0 &&
                                                                 <div>
@@ -104,9 +104,11 @@ class Classified extends Component {
                                                         <td>{getStatus(item.status)}</td>
                                                         <td>{getDateTime(item.created_at)}</td>
                                                         <td>{item.reject_note}</td>
-                                                        <td>{item.description && renderHTML(item.description)}</td>
-                                                    </tr>)}
-                                        </tbody>
+                                                    </tr>
+                                                    {item.description && <tr><td colSpan="10">{renderHTML(item.description)}</td></tr>}
+                                                    {item.reject_note && <tr><td className='text-danger'>Reject Note:</td><td colSpan="10">{item.reject_note}</td></tr>}
+                                                </tbody>)}
+
                                     </table>
                                 </div>
                             </div>
