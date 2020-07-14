@@ -23,6 +23,7 @@ import ClassifiedEdit from './classified/ClassifiedEdit';
 import EbookEdit from './ebook/EbookEdit';
 import EbookCoverPhoto from './ebook/EbookCoverPhoto';
 import ChapterEdit from './ebook/ChapterEdit';
+import PostDetail from './post/PostDetail';
 
 
 
@@ -73,6 +74,7 @@ class ProtectedRoute extends React.Component {
                             {/* Post route */}
                             <Route path='/posts/edit/:id/:title' exact component={PostEdit} history={this.props.history} />
                             <Route path='/posts/list/:type/:title' exact component={Post} history={this.props.history} />
+                            <Route path='/posts/detail/:dataId/:title' exact component={PostDetail} history={this.props.history} />
 
                             {/* Classified route */}
                             <Route path='/classified/edit/:id/:title' exact component={ClassifiedEdit} history={this.props.history} />
@@ -80,9 +82,9 @@ class ProtectedRoute extends React.Component {
 
 
                             {/* User route */}
-                            <Route path='/users/edit/:id' exact component={UserEdit} history={this.props.history} />
-                            <Route path='/users/edit' exact component={UserEdit} history={this.props.history} />
-                            <Route path='/users' exact component={User} history={this.props.history} />
+                            <Route path='/users/create/:id/:name' exact component={UserEdit} history={this.props.history} />
+                            <Route path='/users/create' exact component={UserEdit} history={this.props.history} />
+                            <Route path='/user/list' exact component={User} history={this.props.history} />
                             <Route path='/' exact component={Home} history={this.props.history} />
                             <Route path='*' exact component={PageNotFound} history={this.props.history} />
                         </Switch>

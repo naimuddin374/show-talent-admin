@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux'
-import { storeData, updateData } from '../../store/actions/userActions'
-import { API_URL } from '../../store/actions/types';
-import Axios from 'axios'
+import { storeData, updateData, getUserDetail } from '../../store/actions/userActions'
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
@@ -17,23 +15,18 @@ class UserEdit extends Component {
             name: '',
             contact: '',
             email: '',
+            status: 0,
+            type: 1,
             password: '',
             confirmPassword: '',
-            type: '',
-            status: '',
         }
     }
-    componentDidMount() {
+    async componentDidMount() {
         let { id } = this.state
         if (id) {
-            Axios.get(`${API_URL}api/user/${id}`)
-                .then(res => {
-                    if (Object.keys(res.data).length !== 0) {
-                        let { full_name, name, contact, email, type, status } = res.data[0]
-                        this.setState({ full_name, name, contact, email, type, status })
-                    }
-                })
-                .catch(err => console.error(err))
+            let response = await this.props.getUserDetail(id)
+            let { contact, email, full_name, name, status, type } = response
+            this.setState({ contact, email, full_name, name, status, type })
         }
     }
     changeHandler = event => {
@@ -45,16 +38,15 @@ class UserEdit extends Component {
         event.preventDefault()
         this.setState({ isWait: true })
         let { id } = this.state
-        let isWait = id ? await this.props.updateData(this.state, id) : await this.props.storeData(this.state)
-        this.setState({ isWait })
-        if (isWait) {
-            setTimeout(() => {
-                this.props.history.push('/users')
-            }, 1000)
-        }
+
+        let { storeData, updateData, history } = this.props
+
+        let response = id ? await updateData(this.state, id) : await storeData(this.state)
+        if (response) history.push('/user/list')
+        this.setState({ isWait: false })
     }
     render() {
-        let { isWait, full_name, name, contact, email, password, confirmPassword, status, type, id } = this.state
+        let { isWait, id, contact, email, full_name, name, status, type, password, confirmPassword } = this.state
         let isDone = !isWait && full_name && name && contact && email && type !== '' && status !== ''
         if (!id) {
             if (!password || (password !== confirmPassword)) {
@@ -69,7 +61,7 @@ class UserEdit extends Component {
                             <div className="card">
 
                                 <div className="card-header">
-                                    <Link className="btn btn-dark btn-sm float-right" to='/users'><i className="fa fa-eye"></i></Link>
+                                    <Link className="btn btn-dark btn-sm float-right" to='/user/list'><i className="fa fa-eye"></i></Link>
                                 </div>
 
                                 <div className="card-body">
@@ -79,10 +71,11 @@ class UserEdit extends Component {
                                             <Form.Control
                                                 type="text"
                                                 className="form-control"
-                                                placeholder="Enter Full Name"
+                                                placeholder="Write Full Name"
                                                 name="full_name"
-                                                defaultValue={full_name}
+                                                value={full_name}
                                                 onChange={this.changeHandler}
+                                                required
                                             />
                                         </Form.Group>
                                         <Form.Group>
@@ -90,10 +83,11 @@ class UserEdit extends Component {
                                             <Form.Control
                                                 type="text"
                                                 className="form-control"
-                                                placeholder="Enter Display Name"
+                                                placeholder="Write Display Name"
                                                 name="name"
                                                 value={name}
                                                 onChange={this.changeHandler}
+                                                required
                                             />
                                         </Form.Group>
                                         <Form.Group>
@@ -101,10 +95,11 @@ class UserEdit extends Component {
                                             <Form.Control
                                                 type="number"
                                                 className="form-control"
-                                                placeholder="Enter Contact Number"
+                                                placeholder="Write Contact Number"
                                                 name="contact"
                                                 value={contact}
                                                 onChange={this.changeHandler}
+                                                required
                                             />
                                         </Form.Group>
                                         <Form.Group>
@@ -112,11 +107,12 @@ class UserEdit extends Component {
                                             <Form.Control
                                                 type="email"
                                                 className="form-control"
-                                                placeholder="Enter Email"
+                                                placeholder="Write Email"
                                                 name="email"
                                                 autoComplete="off"
                                                 value={email}
                                                 onChange={this.changeHandler}
+                                                required
                                             />
                                         </Form.Group>
                                         <Form.Group>
@@ -124,7 +120,7 @@ class UserEdit extends Component {
                                             <Form.Control
                                                 type="password"
                                                 className="form-control"
-                                                placeholder="Enter Password"
+                                                placeholder="Write Password"
                                                 name="password"
                                                 autoComplete="off"
                                                 value={password}
@@ -136,7 +132,7 @@ class UserEdit extends Component {
                                             <Form.Control
                                                 type="password"
                                                 className="form-control"
-                                                placeholder="Enter Password"
+                                                placeholder="Write Password"
                                                 name="confirmPassword"
                                                 value={confirmPassword}
                                                 onChange={this.changeHandler}
@@ -186,4 +182,4 @@ class UserEdit extends Component {
 const mapStateToProps = state => ({
     common: state.common
 })
-export default connect(mapStateToProps, { updateData, storeData })(UserEdit)
+export default connect(mapStateToProps, { updateData, storeData, getUserDetail })(UserEdit)

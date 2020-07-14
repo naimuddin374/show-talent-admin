@@ -6,12 +6,12 @@ class Header extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            isModalOpen: false,
+            isOpen: false,
             user: props.auth.user
         }
     }
     render() {
-        // let { user, isOpen } = this.state
+        let { user } = this.state
         return (
             <Fragment>
                 <nav className="main-header navbar navbar-expand navbar-white navbar-light">
@@ -30,7 +30,7 @@ class Header extends Component {
                         </li>
                         <li className="nav-item dropdown">
                             <a className="nav-link" data-toggle="dropdown" href="#Blank">
-                                Admin <i className="far fa-user-circle"></i>
+                                {user.name} <i className="far fa-user-circle"></i>
                                 <span className="badge badge-warning navbar-badge"></span>
                             </a>
                             <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">

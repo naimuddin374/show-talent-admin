@@ -5,7 +5,7 @@ import setAuthToken from '../../util/setAuthToken'
 
 // Login
 export const login = data => async dispatch => {
-    Axios.post(`${API_URL}api/auth/login`, data)
+    Axios.post(`${API_URL}api/auth/admin/login`, data)
         .then(res => {
             if (res.data.token) {
                 dispatch({
@@ -41,6 +41,7 @@ export const login = data => async dispatch => {
 // Logout
 export const logout = history => dispatch => {
     localStorage.removeItem('authToken')
+    history.push('/')
     window.location.reload();
     dispatch({
         type: SET_USER,

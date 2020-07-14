@@ -90,21 +90,21 @@ class Post extends Component {
                                                     <tbody key={item.id}>
                                                         <tr>
                                                             <td>
+
+                                                                <Link className="btn btn-dark btn-sm mx-2" to={`/posts/detail/${item.id}/${item.title}`}>
+                                                                    <i className="fa fa-eye"></i>
+                                                                </Link>
+
                                                                 {Number(item.status) === 0 &&
                                                                     <div>
-                                                                        <a href="#blank" className="btn btn-success btn-sm" onClick={() => window.confirm('Are you sure?') && this.approveHandler(item.id)}>
-                                                                            <i className="fa fa-check"></i>
-                                                                        </a>
-
-                                                                        {/* <Link className="btn btn-dark btn-sm mx-2" to={`/comment/post/${item.id}`}>
-                                                                                <i className="fa fa-comments"></i>
-                                                                            </Link> */}
 
                                                                         <Link className="btn btn-dark btn-sm my-2" to={`/posts/edit/${item.id}/${item.title}`}>
                                                                             <i className="fa fa-edit"></i>
                                                                         </Link>
 
-
+                                                                        <a href="#blank" className="btn btn-success btn-sm" onClick={() => window.confirm('Are you sure?') && this.approveHandler(item.id)}>
+                                                                            <i className="fa fa-check"></i>
+                                                                        </a>
 
                                                                         <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.setState({ isOpen: true, dataId: item.id })}>
                                                                             <i className="fa fa-times"></i>
@@ -134,8 +134,12 @@ class Post extends Component {
                                                             <td>{getStatus(item.status)}</td>
                                                             <td>{getDateTime(item.created_at)}</td>
                                                         </tr>
-                                                        {item.description && <tr><td colSpan="10">{renderHTML(item.description)}</td></tr>}
-                                                        {item.reject_note && <tr><td className='text-danger'>Reject Note:</td><td colSpan="10">{item.reject_note}</td></tr>}
+                                                        {/* {item.description && <tr><td colSpan="10">{renderHTML(item.description)}</td></tr>} */}
+                                                        {/* {item.reject_note && <tr>
+                                                            <td className='text-danger'>Reject Note:</td>
+                                                            <td>{item.moderator.name}</td>
+                                                            <td colSpan="10">{item.reject_note}</td>
+                                                        </tr>} */}
                                                     </tbody>)}
                                     </table>
                                 </div>

@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
 import BookReject from './BookReject';
 import ChapterReject from './ChapterReject';
+import { approveComment } from '../../store/actions/commentActions';
+import CommentReject from './CommentReject';
 
 
 class EbookDetail extends Component {
@@ -19,7 +21,9 @@ class EbookDetail extends Component {
         dataId: this.props.match.params.dataId,
         isOpen: false,
         isChapterOpen: false,
-        chapterId: 0
+        chapterId: 0,
+        isCommentOpen: false,
+        commentId: 0
     }
     componentDidMount() {
         this.onFetchData()
@@ -47,12 +51,18 @@ class EbookDetail extends Component {
         this.setState({
             isOpen: false,
             isChapterOpen: false,
-            chapterId: 0
+            chapterId: 0,
+            commentId: 0,
+            isCommentOpen: false
         })
         this.onFetchData()
     }
+    commentApproveHandler = async id => {
+        await this.props.approveComment(id)
+        this.onFetchData()
+    }
     render() {
-        let { data, loading, isOpen, dataId, isChapterOpen, chapterId } = this.state
+        let { data, loading, isOpen, dataId, isChapterOpen, chapterId, isCommentOpen, commentId } = this.state
         return (
             <Fragment>
                 <section className="content">
@@ -164,6 +174,47 @@ class EbookDetail extends Component {
                                                     {item.reject_note && <tr><td className='text-danger'>Reject Note:</td><td colSpan="10">{item.reject_note}</td></tr>}
                                                 </tbody>)}
                                     </table>
+
+
+                                    <table id="example2" className="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Action</th>
+                                                <th>Commented User</th>
+                                                <th>Status</th>
+                                                <th>Created At</th>
+                                                <th>Rating</th>
+                                                <th>Comment</th>
+                                                <th>Reject Note</th>
+                                            </tr>
+                                        </thead>
+                                        {loading ?
+                                            <tbody>
+                                                <tr>
+                                                    <td colSpan="10">
+                                                        <Loading />
+                                                    </td>
+                                                </tr> </tbody> : data.comments.length > 0 && data.comments.map(item => <tbody key={item.id}> <tr>
+                                                    <td>
+                                                        {Number(item.status) === 0 &&
+                                                            <span>
+                                                                <a href="#blank" className="btn btn-success btn-sm" onClick={() => window.confirm('Are you sure?') && this.commentApproveHandler(item.id)}>
+                                                                    <i className="fa fa-check"></i>
+                                                                </a>
+                                                                <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.setState({ isCommentOpen: true, commentId: item.id })}>
+                                                                    <i className="fa fa-times"></i>
+                                                                </a>
+                                                            </span>}
+                                                    </td>
+                                                    <td>{item.user.name}</td>
+                                                    <td>{getStatus(item.status)}</td>
+                                                    <td>{getDateTime(item.created_at)}</td>
+                                                    <td>{item.rating} Ster</td>
+                                                    <td>{item.comment}</td>
+                                                    <td>{item.reject_note}</td>
+                                                </tr>
+                                                </tbody>)}
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -181,8 +232,15 @@ class EbookDetail extends Component {
                     actionIsDone={this.actionIsDone.bind(this)}
                     dataId={chapterId}
                 />}
+
+                {isCommentOpen && <CommentReject
+                    isOpen={isCommentOpen}
+                    closeHandler={() => this.setState({ isCommentOpen: false, commentId: '' })}
+                    actionIsDone={this.actionIsDone.bind(this)}
+                    dataId={commentId}
+                />}
             </Fragment>
         )
     }
 }
-export default connect(null, { approveData, chapterApprove, getBookDetail })(EbookDetail)
+export default connect(null, { approveData, chapterApprove, getBookDetail, approveComment })(EbookDetail)

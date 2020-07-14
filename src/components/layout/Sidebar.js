@@ -135,26 +135,26 @@ class Sidebar extends Component {
 
 
                                 {/* User */}
-                                {/* <li className="nav-item has-treeview">
+                                <li className="nav-item has-treeview">
                                     <a href="#blank" className="nav-link">
                                         <i className="nav-icon fas fa-users"></i>
                                         <p> User <i className="right fas fa-angle-left"></i> </p>
                                     </a>
                                     <ul className="nav nav-treeview">
                                         <li className="nav-item">
-                                            <Link to="/users" className="nav-link">
+                                            <Link to="/user/list" className="nav-link">
                                                 <i className="far fa-circle nav-icon"></i>
                                                 <p>List of User</p>
                                             </Link>
                                         </li>
                                         <li className="nav-item">
-                                            <Link to="/users/add" className="nav-link">
+                                            <Link to="/users/create" className="nav-link">
                                                 <i className="far fa-circle nav-icon"></i>
                                                 <p>Add New User</p>
                                             </Link>
                                         </li>
                                     </ul>
-                                </li> */}
+                                </li>
 
 
                                 {/* Tools */}

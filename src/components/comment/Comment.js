@@ -4,7 +4,7 @@ import Axios from 'axios'
 import { API_URL } from '../../store/actions/types'
 import { Link } from 'react-router-dom';
 import Loading from './../layout/Loading';
-import { approveData, rejectData } from '../../store/actions/commentActions';
+import { approveComment, rejectData } from '../../store/actions/postCommentActions';
 import { getStatus } from '../../util/helper';
 
 
@@ -34,8 +34,8 @@ class ContentPost extends Component {
             .catch(error => console.error(error.response))
     }
     approveHandler = id => {
-        let { approveData } = this.props
-        approveData(id)
+        let { approveComment } = this.props
+        approveComment(id)
         setTimeout(() => {
             this.onFetchData()
         }, 500)
@@ -109,4 +109,4 @@ class ContentPost extends Component {
         )
     }
 }
-export default connect(null, { approveData, rejectData })(ContentPost)
+export default connect(null, { approveComment, rejectData })(ContentPost)

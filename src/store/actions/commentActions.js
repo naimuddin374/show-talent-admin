@@ -51,7 +51,7 @@ export const deleteData = id => async dispatch => {
 }
 
 // Data Approve
-export const approveData = id => async dispatch => {
+export const approveComment = id => async dispatch => {
     return Axios.put(`${API_URL}api/comment/approve/${id}`)
         .then(res => {
             dispatch({
@@ -75,8 +75,8 @@ export const approveData = id => async dispatch => {
 }
 
 // Data Reject
-export const rejectData = id => async dispatch => {
-    return Axios.put(`${API_URL}api/comment/reject/${id}`)
+export const rejectData = (id, data) => async dispatch => {
+    return Axios.put(`${API_URL}api/comment/reject/${id}`, data)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,

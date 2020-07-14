@@ -24,6 +24,7 @@ export const getAllPost = () => async dispatch => {
 export const getPostDetail = (id) => async dispatch => {
     return Axios.get(`${API_URL}api/post/${id}`)
         .then(res => {
+            console.log('res', res.data)
             return res.data
         })
         .catch(err => {

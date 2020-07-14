@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
-import Axios from 'axios'
-import { API_URL } from '../../store/actions/types'
 import { Link } from 'react-router-dom';
 import Loading from './../layout/Loading';
-
+import { getAllUsers } from '../../store/actions/userActions';
+import { API_URL } from '../../store/actions/types';
+import noImg from '../assets/images/no-img.jpg';
 
 class User extends Component {
     state = {
@@ -14,19 +14,11 @@ class User extends Component {
     componentDidMount() {
         this.onFetchData()
     }
-    onFetchData = () => {
+    onFetchData = async () => {
         this.setState({
-            loading: true,
-            data: [],
+            data: await this.props.getAllUsers(),
+            loading: false
         })
-        Axios.get(`${API_URL}api/admin/user`)
-            .then(res => {
-                this.setState({
-                    loading: false,
-                    data: res.data
-                })
-            })
-            .catch(error => console.log(error.response))
     }
     render() {
 
@@ -39,7 +31,7 @@ class User extends Component {
                             <div className="card">
                                 <div className="card-header">
                                     <h3 className="card-title">List of Users</h3>
-                                    <Link className="btn btn-dark btn-sm float-right" to='/users/edit'><i className="fa fa-plus"></i></Link>
+                                    <Link className="btn btn-dark btn-sm float-right" to='/users/create'><i className="fa fa-plus"></i></Link>
                                 </div>
                                 <div className="card-body">
                                     <table id="example2" className="table table-bordered table-hover">
@@ -64,9 +56,9 @@ class User extends Component {
                                                 </tr> : Object.keys(data).length !== 0 && data.map(item =>
                                                     <tr key={item.id}>
                                                         <td>
-                                                            <Link className="btn btn-dark btn-sm" to={`/users/edit/${item.id}`}><i className="fa fa-edit"></i></Link>
+                                                            <Link className="btn btn-dark btn-sm" to={`/users/create/${item.id}/${item.name}`}><i className="fa fa-edit"></i></Link>
                                                         </td>
-                                                        <td>{item.image}</td>
+                                                        <td><img src={item.image ? API_URL + item.image : noImg} alt='Profile' width='100' /></td>
                                                         <td>{item.full_name}</td>
                                                         <td>{item.name}</td>
                                                         <td>{item.email}</td>
@@ -85,4 +77,4 @@ class User extends Component {
         )
     }
 }
-export default connect(null)(User)
+export default connect(null, { getAllUsers })(User)
