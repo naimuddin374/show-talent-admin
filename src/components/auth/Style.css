@@ -6,7 +6,8 @@
     color: #fff;
     height: 100vh;
     background: rgb(67, 151, 135);
-    background: linear-gradient(60deg, rgba(67, 151, 135, 1) 0%, rgba(102, 215, 229, 1) 72%);
+    /* background: linear-gradient(60deg, rgba(67, 151, 135, 1) 0%, rgba(102, 215, 229, 1) 72%); */
+    background: linear-gradient(180deg, #008DC3 -72.5%, #012C56 100%);
 }
 
 
@@ -42,15 +43,16 @@
 }
 
 button.sign-in-btn {
-    background: #5fcbd3;
-    border: #5fcbd3;
-    color: #000;
+    /* background: #5fcbd3; */
+    border: #008DC3;
+    color: #fff;
     font-weight: 500;
     height: 50px;
+    background: linear-gradient(180deg, #008DC3 -72.5%, #012C56 100%);
 }
 
 button.sign-in-btn:hover {
-    background: #4aa59b;
+    background: #012C56;
     border: #4aa59b;
     color: #fff;
 }
@@ -58,7 +60,7 @@ button.sign-in-btn:hover {
 .login-form-area .btn-primary.disabled,
 .login-form-area .btn-primary:disabled {
     color: #fff;
-    background-color: #66d7e5;
+    background-color: #012C56;
     border-color: #66d7e5;
 }
 

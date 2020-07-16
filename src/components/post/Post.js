@@ -16,7 +16,8 @@ class Post extends Component {
         loading: true,
         type: Number(this.props.match.params.type),
         isOpen: false,
-        dataId: ''
+        dataId: '',
+        postStatus: null
     }
     componentWillReceiveProps(props) {
         let { type } = props.match.params
@@ -53,8 +54,12 @@ class Post extends Component {
         this.onFetchData()
     }
     render() {
+        let { data, loading, type, dataId, isOpen, postStatus } = this.state
 
-        let { data, loading, type, dataId, isOpen } = this.state
+        if (postStatus != null) {
+            data = data.filter(item => Number(item.status) === postStatus)
+        }
+
         return (
             <Fragment>
                 <section className="content">
@@ -63,6 +68,10 @@ class Post extends Component {
                             <div className="card">
                                 <div className="card-header">
                                     <h3 className="card-title">List of {(type === 2 && 'News link') || (type === 3 && 'Opinion') || (type === 4 && 'Video') || (type === 5 && 'Image') || (type === 6 && 'Content')}</h3>
+                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 0 })}>Pending</button>
+                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 1 })}>Approved</button>
+                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 2 })}>Rejected</button>
+                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: null })}>Reset</button>
                                 </div>
                                 <div className="card-body">
                                     <table id="example2" className="table table-bordered table-hover">

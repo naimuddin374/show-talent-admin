@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Loading from './../layout/Loading';
-import { getAllUsers } from '../../store/actions/userActions';
+import Loading from '../layout/Loading';
+import { getAllPage, approveData } from '../../store/actions/pageActions';
 import { API_URL } from '../../store/actions/types';
 import noImg from '../assets/images/no-img.jpg';
+import { getDateTime } from '../../util/helper';
+import PageReject from './PageReject';
 
-class User extends Component {
+class Page extends Component {
     state = {
         data: [],
         loading: true,
@@ -17,24 +19,29 @@ class User extends Component {
     }
     onFetchData = async () => {
         this.setState({
-            data: await this.props.getAllUsers(),
+            data: await this.props.getAllPage(),
             loading: false
         })
     }
+    approveHandler = async id => {
+        let { approveData } = this.props
+        await approveData(id)
+        this.onFetchData()
+    }
+    actionIsDone = () => {
+        this.setState({
+            isOpen: false,
+            dataId: '',
+        })
+        this.onFetchData()
+    }
     render() {
-        let { data, loading, postStatus } = this.state
+        let { data, loading, postStatus, isOpen, dataId } = this.state
 
         if (postStatus != null) {
-            if (postStatus === 11) {
-                data = data.filter(item => Number(item.type) === 1)
-            } else if (postStatus === 12) {
-                data = data.filter(item => Number(item.type) === 2)
-            } else if (postStatus === 13) {
-                data = data.filter(item => Number(item.type) === 3)
-            } else {
-                data = data.filter(item => Number(item.status) === postStatus)
-            }
+            data = data.filter(item => Number(item.status) === postStatus)
         }
+
         return (
             <Fragment>
                 <section className="content">
@@ -42,19 +49,11 @@ class User extends Component {
                         <div className="col-12">
                             <div className="card">
                                 <div className="card-header">
-                                    <h3 className="card-title">List of Users</h3>
-
+                                    <h3 className="card-title">List of Pages</h3>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 0 })}>Pending</button>
-                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 1 })}>Active</button>
-                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 2 })}>Blocked</button>
-
-                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 11 })}>User</button>
-                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 12 })}>Moderator</button>
-                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 13 })}>Admin</button>
-
+                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 1 })}>Approved</button>
+                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 2 })}>Rejected</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: null })}>Reset</button>
-
-                                    <Link className="btn btn-dark btn-sm float-right" to='/users/create'><i className="fa fa-plus"></i></Link>
                                 </div>
                                 <div className="card-body">
                                     <table id="example2" className="table table-bordered table-hover">
@@ -62,12 +61,13 @@ class User extends Component {
                                             <tr>
                                                 <th>Action</th>
                                                 <th>Image</th>
-                                                <th>Full Name</th>
-                                                <th>Display Name</th>
+                                                <th>Name</th>
                                                 <th>Email</th>
                                                 <th>Contact</th>
-                                                <th>Type</th>
+                                                <th>Category</th>
                                                 <th>Status</th>
+                                                <th>Created At</th>
+                                                <th>Reject Note</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -77,17 +77,29 @@ class User extends Component {
                                                         <Loading />
                                                     </td>
                                                 </tr> : Object.keys(data).length !== 0 && data.map(item =>
-                                                    <tr key={item.id}>
+                                                    <tr key={item.id} title={item.bio}>
                                                         <td>
-                                                            <Link className="btn btn-dark btn-sm" to={`/users/create/${item.id}/${item.name}`}><i className="fa fa-edit"></i></Link>
+                                                            <Link className="btn btn-dark btn-sm" to={`/pages/create/${item.id}/${item.name}`}><i className="fa fa-edit"></i></Link>
+
+                                                            {Number(item.status) === 0 &&
+                                                                <span>
+                                                                    <a href="#blank" className="btn btn-success btn-sm" onClick={() => window.confirm('Are you sure?') && this.approveHandler(item.id)}>
+                                                                        <i className="fa fa-check"></i>
+                                                                    </a>
+                                                                    <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.setState({ isOpen: true, dataId: item.id })}>
+                                                                        <i className="fa fa-times"></i>
+                                                                    </a>
+                                                                </span>
+                                                            }
                                                         </td>
                                                         <td><img src={item.image ? API_URL + item.image : noImg} alt='Profile' width='100' /></td>
-                                                        <td>{item.full_name}</td>
                                                         <td>{item.name}</td>
                                                         <td>{item.email}</td>
                                                         <td>{item.contact}</td>
-                                                        <td>{(Number(item.type) === 1 && "User") || (Number(item.type) === 2 && "Moderator") || (Number(item.type) === 3 && "Admin")}</td>
+                                                        <td>{item.category.name}</td>
                                                         <td>{(Number(item.status) === 0 && "Pending") || (Number(item.status) === 1 && "Active") || (Number(item.status) === 2 && "Blocked")}</td>
+                                                        <td>{getDateTime(item.created_at)}</td>
+                                                        <td>{item.reject_note}</td>
                                                     </tr>)}
                                         </tbody>
                                     </table>
@@ -96,8 +108,15 @@ class User extends Component {
                         </div>
                     </div>
                 </section>
+
+                {isOpen && <PageReject
+                    isOpen={isOpen}
+                    closeHandler={() => this.setState({ isOpen: false, dataId: '' })}
+                    actionIsDone={this.actionIsDone.bind(this)}
+                    dataId={dataId}
+                />}
             </Fragment>
         )
     }
 }
-export default connect(null, { getAllUsers })(User)
+export default connect(null, { getAllPage, approveData })(Page)

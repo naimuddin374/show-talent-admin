@@ -24,6 +24,8 @@ import EbookEdit from './ebook/EbookEdit';
 import EbookCoverPhoto from './ebook/EbookCoverPhoto';
 import ChapterEdit from './ebook/ChapterEdit';
 import PostDetail from './post/PostDetail';
+import Page from './page/Page';
+import PageEdit from './page/PageEdit';
 
 
 
@@ -85,6 +87,13 @@ class ProtectedRoute extends React.Component {
                             <Route path='/users/create/:id/:name' exact component={UserEdit} history={this.props.history} />
                             <Route path='/users/create' exact component={UserEdit} history={this.props.history} />
                             <Route path='/user/list' exact component={User} history={this.props.history} />
+
+                            {/* Page route */}
+                            <Route path='/pages/create/:id/:name' exact component={PageEdit} history={this.props.history} />
+                            <Route path='/pages/create' exact component={PageEdit} history={this.props.history} />
+                            <Route path='/page/list' exact component={Page} history={this.props.history} />
+
+
                             <Route path='/' exact component={Home} history={this.props.history} />
                             <Route path='*' exact component={PageNotFound} history={this.props.history} />
                         </Switch>
