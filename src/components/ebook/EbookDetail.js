@@ -2,16 +2,17 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 import { API_URL } from '../../store/actions/types'
 import Loading from '../layout/Loading';
-import { approveData } from '../../store/actions/ebookActions';
-import { chapterApprove } from '../../store/actions/chapterActions';
+import { getBookDetail, approveData, ebookUnpublished, deleteEbook } from '../../store/actions/ebookActions';
+import { chapterApprove, chapterUnpublished, deleteChapter } from '../../store/actions/chapterActions';
 import { getStatus, getDateTime } from '../../util/helper';
-import { getBookDetail } from '../../store/actions/ebookActions';
 import { Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
 import BookReject from './BookReject';
 import ChapterReject from './ChapterReject';
-import { approveComment } from '../../store/actions/commentActions';
+import { approveComment, commentUnpublished, deleteComment } from '../../store/actions/commentActions';
 import CommentReject from './CommentReject';
+import DropdownButton from 'react-bootstrap/DropdownButton'
+import { Dropdown } from 'react-bootstrap';
 
 
 class EbookDetail extends Component {
@@ -39,14 +40,6 @@ class EbookDetail extends Component {
             data: await this.props.getBookDetail(dataId),
         })
     }
-    approveHandler = async id => {
-        await this.props.approveData(id)
-        this.onFetchData()
-    }
-    chapterApproveHandler = async id => {
-        await this.props.chapterApprove(id)
-        this.onFetchData()
-    }
     actionIsDone = () => {
         this.setState({
             isOpen: false,
@@ -57,8 +50,40 @@ class EbookDetail extends Component {
         })
         this.onFetchData()
     }
+    approveHandler = async id => {
+        await this.props.approveData(id)
+        this.onFetchData()
+    }
+    unpublishedHandler = async id => {
+        await this.props.ebookUnpublished(id)
+        this.onFetchData()
+    }
+    removeHandler = async id => {
+        await this.props.deleteEbook(id)
+        this.onFetchData()
+    }
+    chapterApproveHandler = async id => {
+        await this.props.chapterApprove(id)
+        this.onFetchData()
+    }
+    chapterUnpublishedHandler = async id => {
+        await this.props.chapterUnpublished(id)
+        this.onFetchData()
+    }
+    chapterRemoveHandler = async id => {
+        await this.props.deleteChapter(id)
+        this.onFetchData()
+    }
     commentApproveHandler = async id => {
         await this.props.approveComment(id)
+        this.onFetchData()
+    }
+    commentUnpublishedHandler = async id => {
+        await this.props.commentUnpublished(id)
+        this.onFetchData()
+    }
+    commentRemoveHandler = async id => {
+        await this.props.deleteComment(id)
         this.onFetchData()
     }
     render() {
@@ -99,18 +124,13 @@ class EbookDetail extends Component {
                                             <tbody key={data.id}>
                                                 <tr>
                                                     <td>
-                                                        {Number(data.status) === 0 &&
-                                                            <span>
-                                                                <a href="#blank" className="btn btn-success btn-sm" onClick={() => this.approveHandler(data.id)}>
-                                                                    <i className="fa fa-check"></i>
-                                                                </a>
-                                                                <Link className="btn btn-dark btn-sm" to={`/ebook/edit/${data.id}/${data.name}`}>
-                                                                    <i className="fa fa-edit"></i>
-                                                                </Link>
-                                                                <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.setState({ isOpen: true })}>
-                                                                    <i className="fa fa-times"></i>
-                                                                </a>
-                                                            </span>}
+                                                        <DropdownButton id="dropdown-basic-button" title="Action">
+                                                            <Dropdown.Item href={`/ebook/edit/${data.id}/${data.name}`}>Edit</Dropdown.Item>
+                                                            {data.status !== 1 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.approveHandler(data.id)}>Approve</Dropdown.Item>}
+                                                            {data.status === 1 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.unpublishedHandler(data.id)}>Unpublished</Dropdown.Item>}
+                                                            {data.status === 0 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.setState({ isOpen: true })}>Reject</Dropdown.Item>}
+                                                            <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.removeHandler(data.id)}>Delete</Dropdown.Item>
+                                                        </DropdownButton>
                                                     </td>
                                                     <td>{data.page ? data.page.name : data.user.name}</td>
                                                     <td>{data.category.name}</td>
@@ -152,18 +172,13 @@ class EbookDetail extends Component {
                                                     </td>
                                                 </tr> </tbody> : data.chapter.length > 0 && data.chapter.map(item => <tbody key={item.id}> <tr>
                                                     <td>
-                                                        {Number(item.status) === 0 &&
-                                                            <span>
-                                                                <a href="#blank" className="btn btn-success btn-sm" onClick={() => window.confirm('Are you sure?') && this.chapterApproveHandler(item.id)}>
-                                                                    <i className="fa fa-check"></i>
-                                                                </a>
-                                                                <Link className="btn btn-dark btn-sm" to={`/ebook/chapter/edit/${item.id}/${item.name}`}>
-                                                                    <i className="fa fa-edit"></i>
-                                                                </Link>
-                                                                <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.setState({ isChapterOpen: true, chapterId: item.id })}>
-                                                                    <i className="fa fa-times"></i>
-                                                                </a>
-                                                            </span>}
+                                                        <DropdownButton id="dropdown-basic-button" title="Action">
+                                                            <Dropdown.Item href={`/ebook/chapter/edit/${item.id}/${item.name}`}>Edit</Dropdown.Item>
+                                                            {item.status !== 1 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.chapterApproveHandler(item.id)}>Approve</Dropdown.Item>}
+                                                            {item.status === 1 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.chapterUnpublishedHandler(item.id)}>Unpublished</Dropdown.Item>}
+                                                            {item.status === 0 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.setState({ isChapterOpen: true, chapterId: item.id })}>Reject</Dropdown.Item>}
+                                                            <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.commentRemoveHandler(item.id)}>Delete</Dropdown.Item>
+                                                        </DropdownButton>
                                                     </td>
                                                     <td>{item.sequence}</td>
                                                     <td>{item.name}</td>
@@ -196,15 +211,12 @@ class EbookDetail extends Component {
                                                     </td>
                                                 </tr> </tbody> : data.comments.length > 0 && data.comments.map(item => <tbody key={item.id}> <tr>
                                                     <td>
-                                                        {Number(item.status) === 0 &&
-                                                            <span>
-                                                                <a href="#blank" className="btn btn-success btn-sm" onClick={() => window.confirm('Are you sure?') && this.commentApproveHandler(item.id)}>
-                                                                    <i className="fa fa-check"></i>
-                                                                </a>
-                                                                <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.setState({ isCommentOpen: true, commentId: item.id })}>
-                                                                    <i className="fa fa-times"></i>
-                                                                </a>
-                                                            </span>}
+                                                        <DropdownButton id="dropdown-basic-button" title="Action">
+                                                            {item.status !== 1 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.commentApproveHandler(item.id)}>Approve</Dropdown.Item>}
+                                                            {item.status === 1 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.commentUnpublishedHandler(item.id)}>Unpublished</Dropdown.Item>}
+                                                            {item.status === 0 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.setState({ isCommentOpen: true, commentId: item.id })}>Reject</Dropdown.Item>}
+                                                            <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.commentRemoveHandler(item.id)}>Delete</Dropdown.Item>
+                                                        </DropdownButton>
                                                     </td>
                                                     <td>{item.user.name}</td>
                                                     <td>{getStatus(item.status)}</td>
@@ -243,4 +255,4 @@ class EbookDetail extends Component {
         )
     }
 }
-export default connect(null, { approveData, chapterApprove, getBookDetail, approveComment })(EbookDetail)
+export default connect(null, { approveData, chapterApprove, getBookDetail, approveComment, ebookUnpublished, deleteEbook, chapterUnpublished, deleteChapter, commentUnpublished, deleteComment })(EbookDetail)

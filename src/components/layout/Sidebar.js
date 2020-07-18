@@ -166,7 +166,7 @@ class Sidebar extends Component {
                                         <li className="nav-item">
                                             <Link to="/user/list" className="nav-link">
                                                 <i className="far fa-circle nav-icon"></i>
-                                                <p>List of User</p>
+                                                <p>User & Moderator</p>
                                             </Link>
                                         </li>
                                         <li className="nav-item">

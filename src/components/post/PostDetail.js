@@ -2,14 +2,16 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Loading from './../layout/Loading';
-import { approveData, rejectData, getPostDetail } from '../../store/actions/postActions';
+import { approveData, rejectData, getPostDetail, postUnpublished, deletePost } from '../../store/actions/postActions';
 import { getStatus, getVideoLink, getDateTime } from '../../util/helper';
 import renderHTML from 'react-render-html';
 import { ReactTinyLink } from 'react-tiny-link'
 import { API_URL } from '../../store/actions/types';
 import PostReject from './PostReject';
-import { approveComment } from '../../store/actions/postCommentActions';
+import { approveComment, deleteComment } from '../../store/actions/postCommentActions';
 import PostCommentReject from './PostCommentReject';
+import DropdownButton from 'react-bootstrap/DropdownButton'
+import { Dropdown } from 'react-bootstrap';
 
 
 class PostDetail extends Component {
@@ -38,8 +40,23 @@ class PostDetail extends Component {
         })
     }
     approveHandler = async id => {
-        let { approveData } = this.props
-        await approveData(id)
+        await this.props.approveData(id)
+        this.onFetchData()
+    }
+    removeHandler = async id => {
+        await this.props.deletePost(id)
+        this.onFetchData()
+    }
+    unpublishedHandler = async id => {
+        await this.props.postUnpublished(id)
+        this.onFetchData()
+    }
+    commentApproveHandler = async id => {
+        await this.props.approveComment(id)
+        this.onFetchData()
+    }
+    commentRemoveHandler = async id => {
+        await this.props.deleteComment(id)
         this.onFetchData()
     }
     actionIsDone = () => {
@@ -50,12 +67,7 @@ class PostDetail extends Component {
         })
         this.onFetchData()
     }
-    commentApproveHandler = async id => {
-        await this.props.approveComment(id)
-        this.onFetchData()
-    }
     render() {
-
         let { data, loading, dataId, isOpen, isCommentOpen, commentId } = this.state
         return (
             <Fragment>
@@ -94,20 +106,13 @@ class PostDetail extends Component {
                                             <tbody key={data.id}>
                                                 <tr>
                                                     <td>
-                                                        {Number(data.status) === 0 &&
-                                                            <div>
-                                                                <a href="#blank" className="btn btn-success btn-sm" onClick={() => window.confirm('Are you sure?') && this.approveHandler(data.id)}>
-                                                                    <i className="fa fa-check"></i>
-                                                                </a>
-
-                                                                <Link className="btn btn-dark btn-sm my-2" to={`/posts/edit/${data.id}/${data.title}`}>
-                                                                    <i className="fa fa-edit"></i>
-                                                                </Link>
-
-                                                                <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.setState({ isOpen: true, dataId: data.id })}>
-                                                                    <i className="fa fa-times"></i>
-                                                                </a>
-                                                            </div>}
+                                                        <DropdownButton id="dropdown-basic-button" title="Action">
+                                                            <Dropdown.Item href={`/posts/edit/${data.id}/${data.title}`}>Edit</Dropdown.Item>
+                                                            {data.status !== 1 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.approveHandler(data.id)}>Approve</Dropdown.Item>}
+                                                            {data.status === 1 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.unpublishedHandler(data.id)}>Unpublished</Dropdown.Item>}
+                                                            {data.status === 0 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.setState({ isOpen: true, dataId: data.id })}>Reject</Dropdown.Item>}
+                                                            <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.removeHandler(data.id)}>Delete</Dropdown.Item>
+                                                        </DropdownButton>
                                                     </td>
                                                     <td>{data.page ? data.page.name : data.user.name}</td>
                                                     <td>{data.category.name}</td>
@@ -166,15 +171,12 @@ class PostDetail extends Component {
                                                     </td>
                                                 </tr> </tbody> : data.comments.length > 0 && data.comments.map(item => <tbody key={item.id}> <tr>
                                                     <td>
-                                                        {Number(item.status) === 0 &&
-                                                            <span>
-                                                                <a href="#blank" className="btn btn-success btn-sm" onClick={() => window.confirm('Are you sure?') && this.commentApproveHandler(item.id)}>
-                                                                    <i className="fa fa-check"></i>
-                                                                </a>
-                                                                <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.setState({ isCommentOpen: true, commentId: item.id })}>
-                                                                    <i className="fa fa-times"></i>
-                                                                </a>
-                                                            </span>}
+                                                        <DropdownButton id="dropdown-basic-button" title="Action">
+                                                            {item.status !== 1 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.commentApproveHandler(item.id)}>Approve</Dropdown.Item>}
+                                                            {item.status === 1 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.unpublishedHandler(item.id)}>Unpublished</Dropdown.Item>}
+                                                            {item.status === 0 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.setState({ isCommentOpen: true, commentId: item.id })}>Reject</Dropdown.Item>}
+                                                            <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.commentRemoveHandler(item.id)}>Delete</Dropdown.Item>
+                                                        </DropdownButton>
                                                     </td>
                                                     <td>{item.user.name}</td>
                                                     <td>{getStatus(item.status)}</td>
@@ -207,4 +209,4 @@ class PostDetail extends Component {
         )
     }
 }
-export default connect(null, { approveData, rejectData, getPostDetail, approveComment })(PostDetail)
+export default connect(null, { approveData, rejectData, getPostDetail, approveComment, postUnpublished, deletePost, deleteComment })(PostDetail)

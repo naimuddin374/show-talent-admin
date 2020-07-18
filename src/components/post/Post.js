@@ -1,13 +1,13 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import Loading from './../layout/Loading';
-import { approveData, rejectData, getAllPost } from '../../store/actions/postActions';
+import { approveData, rejectData, getAllPost, postUnpublished, deletePost } from '../../store/actions/postActions';
 import { getStatus, getVideoLink, getDateTime } from '../../util/helper';
-import renderHTML from 'react-render-html';
 import { ReactTinyLink } from 'react-tiny-link'
 import { API_URL } from '../../store/actions/types';
 import PostReject from './PostReject';
+import DropdownButton from 'react-bootstrap/DropdownButton'
+import { Dropdown } from 'react-bootstrap';
 
 
 class Post extends Component {
@@ -17,7 +17,8 @@ class Post extends Component {
         type: Number(this.props.match.params.type),
         isOpen: false,
         dataId: '',
-        postStatus: null
+        postStatus: null,
+        createdBy: null
     }
     componentWillReceiveProps(props) {
         let { type } = props.match.params
@@ -42,8 +43,15 @@ class Post extends Component {
         })
     }
     approveHandler = async id => {
-        let { approveData } = this.props
-        await approveData(id)
+        await this.props.approveData(id)
+        this.onFetchData()
+    }
+    removeHandler = async id => {
+        await this.props.deletePost(id)
+        this.onFetchData()
+    }
+    unpublishedHandler = async id => {
+        await this.props.postUnpublished(id)
         this.onFetchData()
     }
     actionIsDone = () => {
@@ -54,10 +62,16 @@ class Post extends Component {
         this.onFetchData()
     }
     render() {
-        let { data, loading, type, dataId, isOpen, postStatus } = this.state
+        let { data, loading, type, dataId, isOpen, postStatus, createdBy } = this.state
 
         if (postStatus != null) {
             data = data.filter(item => Number(item.status) === postStatus)
+        } else {
+            if (createdBy === 'user') {
+                data = data.filter(item => item.page === null)
+            } else if (createdBy === 'page') {
+                data = data.filter(item => item.page !== null)
+            }
         }
 
         return (
@@ -68,10 +82,14 @@ class Post extends Component {
                             <div className="card">
                                 <div className="card-header">
                                     <h3 className="card-title">List of {(type === 2 && 'News link') || (type === 3 && 'Opinion') || (type === 4 && 'Video') || (type === 5 && 'Image') || (type === 6 && 'Content')}</h3>
+                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: null, createdBy: null })}>All</button>
+                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ createdBy: 'user' })}>User Created</button>
+                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ createdBy: 'page' })}>Page Created</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 0 })}>Pending</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 1 })}>Approved</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 2 })}>Rejected</button>
-                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: null })}>Reset</button>
+                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 3 })}>Unpublished</button>
+                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 3 })}>Unpublished</button>
                                 </div>
                                 <div className="card-body">
                                     <table id="example2" className="table table-bordered table-hover">
@@ -99,26 +117,14 @@ class Post extends Component {
                                                     <tbody key={item.id}>
                                                         <tr>
                                                             <td>
-
-                                                                <Link className="btn btn-dark btn-sm mx-2" to={`/posts/detail/${item.id}/${item.title}`}>
-                                                                    <i className="fa fa-eye"></i>
-                                                                </Link>
-
-                                                                {Number(item.status) === 0 &&
-                                                                    <div>
-
-                                                                        <Link className="btn btn-dark btn-sm my-2" to={`/posts/edit/${item.id}/${item.title}`}>
-                                                                            <i className="fa fa-edit"></i>
-                                                                        </Link>
-
-                                                                        <a href="#blank" className="btn btn-success btn-sm" onClick={() => window.confirm('Are you sure?') && this.approveHandler(item.id)}>
-                                                                            <i className="fa fa-check"></i>
-                                                                        </a>
-
-                                                                        <a href="#blank" className="btn btn-danger btn-sm" onClick={() => window.confirm('Are you sure?') && this.setState({ isOpen: true, dataId: item.id })}>
-                                                                            <i className="fa fa-times"></i>
-                                                                        </a>
-                                                                    </div>}
+                                                                <DropdownButton id="dropdown-basic-button" title="Action">
+                                                                    <Dropdown.Item href={`/posts/detail/${item.id}/${item.title}`}>Detail</Dropdown.Item>
+                                                                    <Dropdown.Item href={`/posts/edit/${item.id}/${item.title}`}>Edit</Dropdown.Item>
+                                                                    {item.status !== 1 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.approveHandler(item.id)}>Approve</Dropdown.Item>}
+                                                                    {item.status === 1 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.unpublishedHandler(item.id)}>Unpublished</Dropdown.Item>}
+                                                                    {item.status === 0 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.setState({ isOpen: true, dataId: item.id })}>Reject</Dropdown.Item>}
+                                                                    <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.removeHandler(item.id)}>Delete</Dropdown.Item>
+                                                                </DropdownButton>
                                                             </td>
                                                             <td>{item.page ? item.page.name : item.user.name}</td>
                                                             <td>{item.category.name}</td>
@@ -167,4 +173,4 @@ class Post extends Component {
         )
     }
 }
-export default connect(null, { approveData, rejectData, getAllPost })(Post)
+export default connect(null, { approveData, rejectData, getAllPost, postUnpublished, deletePost })(Post)

@@ -1,5 +1,4 @@
 import React from 'react'
-import store from '../store';
 import Moment from 'react-moment';
 
 export const getStatus = status => {
@@ -7,6 +6,7 @@ export const getStatus = status => {
         case 0: return <span className='text-default'>Pending</span>
         case 1: return <span className='text-success'>Approve</span>
         case 2: return <span className='text-danger'>Rejected</span>
+        case 3: return <span className='text-secondary'>Unpublished</span>
         default: return status
     }
 }
