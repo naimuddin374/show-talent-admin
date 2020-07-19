@@ -40,10 +40,10 @@ class EbookContent extends Component {
                             <div className="card">
                                 <div className="card-header">
                                     <h3 className="card-title">List of Ebook</h3>
+                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: null })}>All</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 0 })}>Pending</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 1 })}>Approved</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 2 })}>Rejected</button>
-                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: null })}>Reset</button>
                                 </div>
                                 <div className="card-body">
                                     <table id="example2" className="table table-bordered table-hover">

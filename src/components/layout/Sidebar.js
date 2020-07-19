@@ -26,7 +26,7 @@ class Sidebar extends Component {
         }
     }
     render() {
-        let { post, postComment, ebook, ebookComment, chapter, classified, user, page } = this.state
+        let { post, postComment, ebook, classified, user, page } = this.state
         let postCount = post.length + postComment
 
         let postNews = post.filter(item => Number(item.type) === 2).length
@@ -34,7 +34,7 @@ class Sidebar extends Component {
         let postVideo = post.filter(item => Number(item.type) === 4).length
         let postImg = post.filter(item => Number(item.type) === 5).length
 
-        ebook += ebookComment + chapter
+        // ebook += ebookComment + chapter
         return (
             <Fragment>
                 <aside className="main-sidebar sidebar-dark-primary elevation-4">
