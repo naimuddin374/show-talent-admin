@@ -26,6 +26,7 @@ import ChapterEdit from './ebook/ChapterEdit';
 import PostDetail from './post/PostDetail';
 import Page from './page/Page';
 import PageEdit from './page/PageEdit';
+import EditorPick from './post/EditorPick';
 
 
 
@@ -77,6 +78,7 @@ class ProtectedRoute extends React.Component {
                             <Route path='/posts/edit/:id/:title' exact component={PostEdit} history={this.props.history} />
                             <Route path='/posts/list/:type/:title' exact component={Post} history={this.props.history} />
                             <Route path='/posts/detail/:dataId/:title' exact component={PostDetail} history={this.props.history} />
+                            <Route path='/posts/editor/list' exact component={EditorPick} history={this.props.history} />
 
                             {/* Classified route */}
                             <Route path='/classified/edit/:id/:title' exact component={ClassifiedEdit} history={this.props.history} />

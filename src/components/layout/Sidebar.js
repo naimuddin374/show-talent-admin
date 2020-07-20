@@ -27,7 +27,7 @@ class Sidebar extends Component {
     }
     render() {
         let { post, postComment, ebook, classified, user, page } = this.state
-        let postCount = post.length + postComment
+        let totalPost = post.length + postComment
 
         let postNews = post.filter(item => Number(item.type) === 2).length
         let postOpinion = post.filter(item => Number(item.type) === 3).length || 0
@@ -57,7 +57,7 @@ class Sidebar extends Component {
                                 <li className="nav-item has-treeview">
                                     <a href="#blank" className="nav-link">
                                         <i className="nav-icon fas fa-tachometer-alt"></i>
-                                        <p>Post {postCount > 0 && `(${postCount})`} <i className="right fas fa-angle-left"></i></p>
+                                        <p>Post {totalPost > 0 && `(${totalPost})`} <i className="right fas fa-angle-left"></i></p>
                                     </a>
                                     <ul className="nav nav-treeview">
                                         <li className="nav-item">
@@ -82,6 +82,12 @@ class Sidebar extends Component {
                                             <Link to="/posts/list/5/image" className="nav-link">
                                                 <i className="far fa-circle nav-icon"></i>
                                                 <p>List of Image {postImg > 0 && `(${postImg})`}</p>
+                                            </Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link to="/posts/editor/list" className="nav-link">
+                                                <i className="far fa-circle nav-icon"></i>
+                                                <p>List of Editor</p>
                                             </Link>
                                         </li>
                                     </ul>
@@ -110,7 +116,7 @@ class Sidebar extends Component {
                                 <li className="nav-item has-treeview">
                                     <a href="#blank" className="nav-link">
                                         <i className="nav-icon fas fa-tachometer-alt"></i>
-                                        <p> Ebook ({ebook > 0 && ebook}) <i className="right fas fa-angle-left"></i> </p>
+                                        <p> Ebook {ebook > 0 && `(${ebook})`} <i className="right fas fa-angle-left"></i> </p>
                                     </a>
                                     <ul className="nav nav-treeview">
                                         <li className="nav-item">

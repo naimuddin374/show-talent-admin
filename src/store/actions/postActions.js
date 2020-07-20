@@ -158,3 +158,27 @@ export const postUnpublished = id => async dispatch => {
             return false
         })
 }
+
+// Data Editor pick
+export const updateEditorPick = (id, data) => async dispatch => {
+    return Axios.put(`${API_URL}api/editor/pick/${id}`, data)
+        .then(res => {
+            dispatch({
+                type: SET_MESSAGE,
+                payload: {
+                    message: res.data.message,
+                }
+            })
+            return true
+        })
+        .catch(err => {
+            dispatch({
+                type: SET_MESSAGE,
+                payload: {
+                    message: err.response.data.message,
+                    type: 'error',
+                }
+            })
+            return false
+        })
+}
