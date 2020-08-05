@@ -166,13 +166,19 @@ class Sidebar extends Component {
                                 <li className="nav-item has-treeview">
                                     <a href="#blank" className="nav-link">
                                         <i className="nav-icon fas fa-users"></i>
-                                        <p> User {user > 0 && `(${user})`} <i className="right fas fa-angle-left"></i> </p>
+                                        <p> Users {user > 0 && `(${user})`} <i className="right fas fa-angle-left"></i> </p>
                                     </a>
                                     <ul className="nav nav-treeview">
                                         <li className="nav-item">
                                             <Link to="/user/list" className="nav-link">
                                                 <i className="far fa-circle nav-icon"></i>
-                                                <p>User & Moderator</p>
+                                                <p>List of User</p>
+                                            </Link>
+                                        </li>
+                                        <li className="nav-item">
+                                            <Link to="/admin/user/list" className="nav-link">
+                                                <i className="far fa-circle nav-icon"></i>
+                                                <p>List of Admin</p>
                                             </Link>
                                         </li>
                                         <li className="nav-item">
@@ -215,7 +221,21 @@ class Sidebar extends Component {
                                     </a>
                                     <ul className="nav nav-treeview">
                                         <li className="nav-item">
-                                            <Link to="/category" className="nav-link">
+                                            <Link to="/city/list" className="nav-link">
+                                                <i className="far fa-circle nav-icon"></i>
+                                                <p>List of City</p>
+                                            </Link>
+                                        </li>
+
+                                        <li className="nav-item">
+                                            <Link to="/country/list" className="nav-link">
+                                                <i className="far fa-circle nav-icon"></i>
+                                                <p>List of Country</p>
+                                            </Link>
+                                        </li>
+
+                                        <li className="nav-item">
+                                            <Link to="/category/list" className="nav-link">
                                                 <i className="far fa-circle nav-icon"></i>
                                                 <p>List of Category</p>
                                             </Link>

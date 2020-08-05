@@ -6,7 +6,7 @@ import { getAllUsers } from '../../store/actions/userActions';
 import { API_URL } from '../../store/actions/types';
 import noImg from '../assets/images/no-img.jpg';
 
-class User extends Component {
+class AdminUser extends Component {
     state = {
         data: [],
         loading: true,
@@ -24,7 +24,7 @@ class User extends Component {
     render() {
         let { data, loading, postStatus } = this.state
 
-        data = data.filter(item => Number(item.type) === 1)
+        data = data.filter(item => Number(item.type) !== 1)
 
         if (postStatus != null) {
             data = data.filter(item => Number(item.status) === postStatus)
@@ -55,8 +55,8 @@ class User extends Component {
                                                 <th>Display Name</th>
                                                 <th>Email</th>
                                                 <th>Contact</th>
+                                                <th>Type</th>
                                                 <th>Status</th>
-                                                <th>Points</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -75,8 +75,8 @@ class User extends Component {
                                                         <td>{item.name}</td>
                                                         <td>{item.email}</td>
                                                         <td>{item.contact}</td>
+                                                        <td>{(Number(item.type) === 1 && "User") || (Number(item.type) === 2 && "Admin") || (Number(item.type) === 3 && "Super Admin")}</td>
                                                         <td>{(Number(item.status) === 0 && "Pending") || (Number(item.status) === 1 && "Active") || (Number(item.status) === 2 && "Blocked")}</td>
-                                                        <td>{item.points}</td>
                                                     </tr>)}
                                         </tbody>
                                     </table>
@@ -89,4 +89,4 @@ class User extends Component {
         )
     }
 }
-export default connect(null, { getAllUsers })(User)
+export default connect(null, { getAllUsers })(AdminUser)

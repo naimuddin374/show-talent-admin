@@ -41,8 +41,8 @@ class Classified extends Component {
         this.onFetchData()
     }
     approveHandler = async id => {
-        let { approveData } = this.props
-        await approveData(id)
+        let points = prompt('Enter Reward Point', 0);
+        await this.props.approveData(id, { points })
         this.onFetchData()
     }
     removeHandler = async id => {
@@ -73,15 +73,16 @@ class Classified extends Component {
                             <div className="card">
                                 <div className="card-header">
                                     <h3 className="card-title">List of Classified</h3>
-                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: null })}>All</button>
+                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: null, createdBy: null })}>Reset</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ createdBy: 'user' })}>User Created</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ createdBy: 'page' })}>Page Created</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 0 })}>Pending</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 1 })}>Approved</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 2 })}>Rejected</button>
+                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 3 })}>Unpublished</button>
                                 </div>
                                 <div className="card-body">
-                                    <table id="example2" className="table table-bordered table-hover">
+                                    <table id="example2" className="table table-bordered table-hover table-responsive">
                                         <thead>
                                             <tr>
                                                 <th>Action</th>
@@ -92,6 +93,7 @@ class Classified extends Component {
                                                 <th>Contact</th>
                                                 <th>Address</th>
                                                 <th>Status</th>
+                                                <th>Points</th>
                                                 <th>Created At</th>
                                                 <th>Reject Note</th>
                                             </tr>
@@ -122,6 +124,7 @@ class Classified extends Component {
                                                         <td>{item.contact}<br />{item.email}</td>
                                                         <td>{item.address}</td>
                                                         <td>{getStatus(item.status)}</td>
+                                                        <td>{item.points}</td>
                                                         <td>{getDateTime(item.created_at)}</td>
                                                         <td>{item.reject_note}</td>
                                                     </tr>

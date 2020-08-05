@@ -3,7 +3,7 @@ import Axios from 'axios'
 
 // Get all data
 export const getAllCategory = () => async dispatch => {
-    return Axios.get(`${API_URL}api/category`)
+    return Axios.get(`${API_URL}api/admin/category`)
         .then(res => {
             return res.data
         })

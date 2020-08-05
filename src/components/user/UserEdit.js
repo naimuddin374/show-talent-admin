@@ -149,8 +149,8 @@ class UserEdit extends Component {
                                             >
                                                 <option value="">Select One</option>
                                                 <option value="1">User</option>
-                                                <option value="2">Moderator</option>
-                                                <option value="3">Admin</option>
+                                                <option value="2">Admin</option>
+                                                <option value="3">Super Admin</option>
                                             </Form.Control>
                                         </Form.Group>
                                         <Form.Group>

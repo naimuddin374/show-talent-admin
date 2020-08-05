@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux'
-import { storeData, updateData, getCategoryDetail } from '../../store/actions/categoryActions'
+import { storeData, updateData, getCountryDetail } from '../../store/actions/countryActions'
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 
-class CategoryEdit extends Component {
+class CountryEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,7 +19,7 @@ class CategoryEdit extends Component {
         let { id } = this.state
         if (id) {
             this.setState({
-                ...await this.props.getCategoryDetail(id)
+                ...await this.props.getCountryDetail(id)
             })
         }
     }
@@ -33,7 +33,7 @@ class CategoryEdit extends Component {
         this.setState({ isWait: true })
         let { id } = this.state
         let response = id ? await this.props.updateData(this.state, id) : await this.props.storeData(this.state)
-        response && this.props.history.push('/category/list')
+        response && this.props.history.push('/country/list')
         this.setState({ isWait: false })
     }
     render() {
@@ -47,7 +47,7 @@ class CategoryEdit extends Component {
                             <div className="card">
 
                                 <div className="card-header">
-                                    <Link className="btn btn-dark btn-sm float-right" to='/category/list'><i className="fa fa-eye"></i></Link>
+                                    <Link className="btn btn-dark btn-sm float-right" to='/country/list'><i className="fa fa-eye"></i></Link>
                                 </div>
 
                                 <div className="card-body">
@@ -77,4 +77,4 @@ class CategoryEdit extends Component {
 const mapStateToProps = state => ({
     common: state.common
 })
-export default connect(mapStateToProps, { updateData, storeData, getCategoryDetail })(CategoryEdit)
+export default connect(mapStateToProps, { updateData, storeData, getCountryDetail })(CountryEdit)

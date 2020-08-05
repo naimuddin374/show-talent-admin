@@ -43,7 +43,8 @@ class Post extends Component {
         })
     }
     approveHandler = async id => {
-        await this.props.approveData(id)
+        let points = prompt('Enter Reward Point', 0);
+        await this.props.approveData(id, { points })
         this.onFetchData()
     }
     removeHandler = async id => {
@@ -82,17 +83,16 @@ class Post extends Component {
                             <div className="card">
                                 <div className="card-header">
                                     <h3 className="card-title">List of {(type === 2 && 'News link') || (type === 3 && 'Opinion') || (type === 4 && 'Video') || (type === 5 && 'Image') || (type === 6 && 'Content')}</h3>
-                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: null, createdBy: null })}>All</button>
+                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: null, createdBy: null })}>Reset</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ createdBy: 'user' })}>User Created</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ createdBy: 'page' })}>Page Created</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 0 })}>Pending</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 1 })}>Approved</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 2 })}>Rejected</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 3 })}>Unpublished</button>
-                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 3 })}>Unpublished</button>
                                 </div>
                                 <div className="card-body">
-                                    <table id="example2" className="table table-bordered table-hover">
+                                    <table id="example2" className="table table-bordered table-hover table-responsive">
                                         <thead>
                                             <tr>
                                                 <th>Action</th>
@@ -103,6 +103,7 @@ class Post extends Component {
                                                 {type === 4 && <th>Video</th>}
                                                 {type === 5 && <th>Image</th>}
                                                 <th>Status</th>
+                                                <th>Points</th>
                                                 <th>Created At</th>
                                             </tr>
                                         </thead>
@@ -147,6 +148,7 @@ class Post extends Component {
                                                             </td>}
                                                             {item.type === 5 && <td>{item.image && <img src={API_URL + item.image} alt='Pic' width='100' />}</td>}
                                                             <td>{getStatus(item.status)}</td>
+                                                            <td>{item.points}</td>
                                                             <td>{getDateTime(item.created_at)}</td>
                                                         </tr>
                                                         {/* {item.description && <tr><td colSpan="10">{renderHTML(item.description)}</td></tr>} */}

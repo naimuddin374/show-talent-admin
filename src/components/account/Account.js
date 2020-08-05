@@ -58,7 +58,7 @@ class Account extends Component {
                                     <Link className="btn btn-dark btn-sm float-right" to='/users/edit'><i className="fa fa-plus"></i></Link>
                                 </div>
                                 <div className="card-body">
-                                    <table id="example2" className="table table-bordered table-hover">
+                                    <table id="example2" className="table table-bordered table-hover table-responsive">
                                         <thead>
                                             <tr>
                                                 <th>Action</th>

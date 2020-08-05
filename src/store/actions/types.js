@@ -1,4 +1,4 @@
-export const API_URL = 'https://btlbd.tk/showtalent-api/'
+export const API_URL = 'http://api.showtalent.xyz/'
 // export const API_URL = 'http://localhost:8000/'
 
 export const SET_MESSAGE = 'SET_MESSAGE'

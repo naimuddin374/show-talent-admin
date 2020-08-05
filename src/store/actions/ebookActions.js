@@ -86,8 +86,8 @@ export const deleteEbook = id => async dispatch => {
 }
 
 // Data Approve
-export const approveData = id => async dispatch => {
-    return Axios.put(`${API_URL}api/ebook/approve/${id}`)
+export const approveData = (id, data) => async dispatch => {
+    return Axios.put(`${API_URL}api/ebook/approve/${id}`, data)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,

@@ -69,8 +69,8 @@ export const deleteChapter = id => async dispatch => {
 }
 
 // Data Approve
-export const chapterApprove = id => async dispatch => {
-    return Axios.put(`${API_URL}api/chapter/approve/${id}`)
+export const chapterApprove = (id, data) => async dispatch => {
+    return Axios.put(`${API_URL}api/chapter/approve/${id}`, data)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,

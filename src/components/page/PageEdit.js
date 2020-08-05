@@ -24,7 +24,7 @@ class PageEdit extends Component {
         let { id } = this.state
         if (id) {
             let response = await this.props.getPageDetail(id)
-            let { contact, email, name, category_id, bio } = response.pageInfo
+            let { contact, email, name, category_id, bio } = response
             this.setState({ contact, email, name, category_id, bio, categories: await this.props.getAllCategory() })
         }
     }

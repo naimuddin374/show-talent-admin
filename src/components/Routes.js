@@ -7,6 +7,7 @@ import Header from './layout/Header';
 import Footer from './layout/Footer';
 import Home from './home/Home';
 import User from './user/User';
+import AdminUser from './user/AdminUser';
 import UserEdit from './user/UserEdit';
 import PageNotFound from './home/PageNotFound';
 import Post from './post/Post';
@@ -27,6 +28,10 @@ import PostDetail from './post/PostDetail';
 import Page from './page/Page';
 import PageEdit from './page/PageEdit';
 import EditorPick from './post/EditorPick';
+import CountryList from './country/CountryList';
+import CountryEdit from './country/CountryEdit';
+import CityEdit from './city/CityEdit';
+import CityList from './city/CityList';
 
 
 
@@ -52,8 +57,6 @@ class ProtectedRoute extends React.Component {
 
 
                             {/* Ad */}
-                            {/* <Route path='/ads/edit/:id' component={EbookEdit} history={this.props.history} />
-                            <Route path='/ads/detail/:id' component={CategoryEdit} history={this.props.history} /> */}
                             <Route path='/ads' component={AdPost} exact history={this.props.history} />
 
 
@@ -69,9 +72,21 @@ class ProtectedRoute extends React.Component {
 
 
                             {/* Category */}
-                            <Route path='/category/edit/:id' exact component={CategoryEdit} history={this.props.history} />
+                            <Route path='/category/edit/:id/:name' exact component={CategoryEdit} history={this.props.history} />
                             <Route path='/category/edit' exact component={CategoryEdit} history={this.props.history} />
-                            <Route path='/category' exact component={CategoryList} history={this.props.history} />
+                            <Route path='/category/list' exact component={CategoryList} history={this.props.history} />
+
+
+                            {/* country */}
+                            <Route path='/country/edit/:id/:name' exact component={CountryEdit} history={this.props.history} />
+                            <Route path='/country/edit' exact component={CountryEdit} history={this.props.history} />
+                            <Route path='/country/list' exact component={CountryList} history={this.props.history} />
+
+
+                            {/* City */}
+                            <Route path='/city/edit/:id/:name' exact component={CityEdit} history={this.props.history} />
+                            <Route path='/city/edit' exact component={CityEdit} history={this.props.history} />
+                            <Route path='/city/list' exact component={CityList} history={this.props.history} />
 
 
                             {/* Post route */}
@@ -89,6 +104,7 @@ class ProtectedRoute extends React.Component {
                             <Route path='/users/create/:id/:name' exact component={UserEdit} history={this.props.history} />
                             <Route path='/users/create' exact component={UserEdit} history={this.props.history} />
                             <Route path='/user/list' exact component={User} history={this.props.history} />
+                            <Route path='/admin/user/list' exact component={AdminUser} history={this.props.history} />
 
                             {/* Page route */}
                             <Route path='/pages/create/:id/:name' exact component={PageEdit} history={this.props.history} />

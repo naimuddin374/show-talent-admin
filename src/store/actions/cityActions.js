@@ -1,9 +1,9 @@
 import { SET_MESSAGE, API_URL } from './types'
 import Axios from 'axios'
 
-// Data Get
-export const getAllPage = () => async dispatch => {
-    return Axios.get(`${API_URL}api/admin/page`)
+// Get all data
+export const getAllCity = () => async dispatch => {
+    return Axios.get(`${API_URL}api/admin/city`)
         .then(res => {
             return res.data
         })
@@ -19,9 +19,9 @@ export const getAllPage = () => async dispatch => {
         })
 }
 
-// Data Get
-export const getPageDetail = (id) => async dispatch => {
-    return Axios.get(`${API_URL}api/page/${id}`)
+// Get Detail Data
+export const getCityDetail = (id) => async dispatch => {
+    return Axios.get(`${API_URL}api/city/${id}`)
         .then(res => {
             return res.data
         })
@@ -39,7 +39,7 @@ export const getPageDetail = (id) => async dispatch => {
 
 // Data Store
 export const storeData = data => async dispatch => {
-    return Axios.post(`${API_URL}api/page`, data)
+    return Axios.post(`${API_URL}api/city`, data)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -64,7 +64,7 @@ export const storeData = data => async dispatch => {
 
 // Data Update
 export const updateData = (data, id) => async dispatch => {
-    return Axios.put(`${API_URL}api/page/${id}`, data)
+    return Axios.put(`${API_URL}api/city/${id}`, data)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,
@@ -87,80 +87,8 @@ export const updateData = (data, id) => async dispatch => {
 }
 
 // Data Delete
-export const deletePage = id => async dispatch => {
-    return Axios.delete(`${API_URL}api/page/${id}`)
-        .then(res => {
-            dispatch({
-                type: SET_MESSAGE,
-                payload: {
-                    message: res.data.message,
-                }
-            })
-            return true
-        })
-        .catch(err => {
-            dispatch({
-                type: SET_MESSAGE,
-                payload: {
-                    message: err.response.data.message,
-                    type: 'error',
-                }
-            })
-            return false
-        })
-}
-
-// Data Approve
-export const approveData = id => async dispatch => {
-    return Axios.put(`${API_URL}api/page/approve/${id}`)
-        .then(res => {
-            dispatch({
-                type: SET_MESSAGE,
-                payload: {
-                    message: res.data.message,
-                }
-            })
-            return true
-        })
-        .catch(err => {
-            dispatch({
-                type: SET_MESSAGE,
-                payload: {
-                    message: err.response.data.message,
-                    type: 'error',
-                }
-            })
-            return false
-        })
-}
-
-// Data Reject
-export const rejectData = (id, data) => async dispatch => {
-    return Axios.put(`${API_URL}api/page/reject/${id}`, data)
-        .then(res => {
-            dispatch({
-                type: SET_MESSAGE,
-                payload: {
-                    message: res.data.message,
-                }
-            })
-            return true
-        })
-        .catch(err => {
-            dispatch({
-                type: SET_MESSAGE,
-                payload: {
-                    message: err.response.data.message,
-                    type: 'error',
-                }
-            })
-            return false
-        })
-}
-
-// Data Unpublished
-export const pageUnpublished = id => async dispatch => {
-    return Axios.put(`${API_URL}api/page/unpublished/${id}`)
+export const deleteData = id => async dispatch => {
+    return Axios.delete(`${API_URL}api/city/${id}`)
         .then(res => {
             dispatch({
                 type: SET_MESSAGE,

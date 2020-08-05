@@ -51,7 +51,8 @@ class EbookDetail extends Component {
         this.onFetchData()
     }
     approveHandler = async id => {
-        await this.props.approveData(id)
+        let points = prompt('Enter Reward Point', 0);
+        await this.props.approveData(id, points)
         this.onFetchData()
     }
     unpublishedHandler = async id => {
@@ -63,7 +64,8 @@ class EbookDetail extends Component {
         this.onFetchData()
     }
     chapterApproveHandler = async id => {
-        await this.props.chapterApprove(id)
+        let points = prompt('Enter Reward Point', 0);
+        await this.props.chapterApprove(id, points)
         this.onFetchData()
     }
     chapterUnpublishedHandler = async id => {
@@ -108,6 +110,7 @@ class EbookDetail extends Component {
                                                 <th>Author Name</th>
                                                 <th>Publication Date</th>
                                                 <th>Status</th>
+                                                <th>Points</th>
                                                 <th>Created At</th>
                                                 <th>Front Image</th>
                                                 <th>Back Image</th>
@@ -138,6 +141,7 @@ class EbookDetail extends Component {
                                                     <td>{data.author_name}</td>
                                                     <td>{data.publication_date}</td>
                                                     <td>{getStatus(data.status)}</td>
+                                                    <td>{data.points}</td>
                                                     <td>{getDateTime(data.created_at)}</td>
                                                     <td>{data.front_image && <img src={API_URL + data.front_image} width='100' alt='Cover' />}</td>
                                                     <td>{data.back_image && <img src={API_URL + data.back_image} width='100' alt='Cover' />}</td>
@@ -153,13 +157,14 @@ class EbookDetail extends Component {
                                     <div className="card-header">
                                         <h3 className="card-title"><b>List of Chapter</b></h3>
                                     </div>
-                                    <table id="example2" className="table table-bordered table-hover">
+                                    <table id="example2" className="table table-bordered table-hover table-responsive">
                                         <thead>
                                             <tr>
                                                 <th>Action</th>
                                                 <th>Sequence</th>
                                                 <th>Name</th>
                                                 <th>Status</th>
+                                                <th>Points</th>
                                                 <th>Created At</th>
                                             </tr>
                                         </thead>
@@ -183,6 +188,7 @@ class EbookDetail extends Component {
                                                     <td>{item.sequence}</td>
                                                     <td>{item.name}</td>
                                                     <td>{getStatus(item.status)}</td>
+                                                    <td>{item.points}</td>
                                                     <td>{getDateTime(item.created_at)}</td>
                                                 </tr>
                                                     {item.description && <tr><td colSpan='10'>{renderHTML(item.description)}</td></tr>}
@@ -191,7 +197,7 @@ class EbookDetail extends Component {
                                     </table>
 
 
-                                    <table id="example2" className="table table-bordered table-hover">
+                                    <table id="example2" className="table table-bordered table-hover table-responsive">
                                         <thead>
                                             <tr>
                                                 <th>Action</th>

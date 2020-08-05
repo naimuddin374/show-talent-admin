@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Loading from './../layout/Loading';
-import { deleteData, getAllCategory } from './../../store/actions/categoryActions';
+import Loading from '../layout/Loading';
+import { deleteData, getAllCity } from '../../store/actions/cityActions';
 
 
-class CategoryList extends Component {
+
+class CityList extends Component {
     state = {
         data: [],
         loading: true,
@@ -16,7 +17,7 @@ class CategoryList extends Component {
     onFetchData = async () => {
         this.setState({
             loading: false,
-            data: await this.props.getAllCategory(),
+            data: await this.props.getAllCity()
         })
     }
     deleteHandler = id => {
@@ -35,9 +36,9 @@ class CategoryList extends Component {
                         <div className="col-12">
                             <div className="card">
                                 <div className="card-header">
-                                    <h3 className="card-title">List of Category</h3>
+                                    <h3 className="card-title">List of City</h3>
 
-                                    <Link className="btn btn-dark btn-sm float-right" to='/category/edit'><i className="fa fa-plus"></i></Link>
+                                    <Link className="btn btn-dark btn-sm float-right" to='/city/edit'><i className="fa fa-plus"></i></Link>
                                 </div>
                                 <div className="card-body">
                                     <table id="example2" className="table table-bordered table-hover">
@@ -45,6 +46,7 @@ class CategoryList extends Component {
                                             <tr>
                                                 <th>Action</th>
                                                 <th>Name</th>
+                                                <th>Country</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -56,7 +58,7 @@ class CategoryList extends Component {
                                                 </tr> : Object.keys(data).length !== 0 && data.map(item =>
                                                     <tr key={item.id}>
                                                         <td>
-                                                            <Link className="btn btn-dark btn-sm mx-2" to={`/category/edit/${item.id}/${item.name}`}>
+                                                            <Link className="btn btn-dark btn-sm mx-2" to={`/city/edit/${item.id}/${item.name}`}>
                                                                 <i className="fa fa-edit"></i>
                                                             </Link>
                                                             <a href="#blank" className="btn btn-danger btn-sm" onClick={() => this.deleteHandler(item.id)}>
@@ -64,6 +66,7 @@ class CategoryList extends Component {
                                                             </a>
                                                         </td>
                                                         <td>{item.name}</td>
+                                                        <td>{item.country && item.country.name}</td>
                                                     </tr>)}
                                         </tbody>
                                     </table>
@@ -76,4 +79,4 @@ class CategoryList extends Component {
         )
     }
 }
-export default connect(null, { deleteData, getAllCategory })(CategoryList)
+export default connect(null, { deleteData, getAllCity })(CityList)

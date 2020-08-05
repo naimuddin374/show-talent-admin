@@ -79,7 +79,7 @@ class PostDetail extends Component {
                                     <h3 className="card-title">Post Detail information</h3>
                                 </div>
                                 <div className="card-body">
-                                    <table id="example2" className="table table-bordered table-hover">
+                                    <table id="example2" className="table table-bordered table-hover table-responsive">
                                         <thead>
                                             <tr>
                                                 <th>Action</th>
@@ -152,7 +152,7 @@ class PostDetail extends Component {
                                     <div className="card-header">
                                         <h3 className="card-title"><b>List of Comments</b></h3>
                                     </div>
-                                    <table id="example2" className="table table-bordered table-hover">
+                                    <table id="example2" className="table table-bordered table-hover table-responsive">
                                         <thead>
                                             <tr>
                                                 <th>Action</th>

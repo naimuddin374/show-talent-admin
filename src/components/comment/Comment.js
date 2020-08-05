@@ -60,7 +60,7 @@ class ContentPost extends Component {
                                     <h3 className="card-title">List of Comment</h3>
                                 </div>
                                 <div className="card-body">
-                                    <table id="example2" className="table table-bordered table-hover">
+                                    <table id="example2" className="table table-bordered table-hover table-responsive">
                                         <thead>
                                             <tr>
                                                 <th>Action</th>

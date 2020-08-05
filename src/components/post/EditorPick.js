@@ -42,12 +42,12 @@ class EditorPick extends Component {
         if (postStatus != null) {
             data = data.filter(item => Number(item.status) === postStatus)
         } else {
-            if (createdBy === 'user') {
+            if (isEditor === 1) {
+                data = data.filter(item => item.is_editor === 1)
+            } else if (createdBy === 'user') {
                 data = data.filter(item => item.page === null)
             } else if (createdBy === 'page') {
                 data = data.filter(item => item.page !== null)
-            } else if (isEditor === 1) {
-                data = data.filter(item => item.is_editor === 1)
             }
         }
 
@@ -70,7 +70,7 @@ class EditorPick extends Component {
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 3 })}>Unpublished</button>
                                 </div>
                                 <div className="card-body">
-                                    <table id="example2" className="table table-bordered table-hover">
+                                    <table id="example2" className="table table-bordered table-hover table-responsive">
                                         <thead>
                                             <tr>
                                                 <th>Action</th>

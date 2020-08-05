@@ -1,27 +1,36 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux'
-import { storeData, updateData, getCategoryDetail } from '../../store/actions/categoryActions'
+import { storeData, updateData, getCityDetail } from '../../store/actions/cityActions'
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { getAllCountry } from '../../store/actions/countryActions';
 
 
-class CategoryEdit extends Component {
+class CityEdit extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isWait: false,
             id: props.match.params.id || null,
+            country_id: 0,
             name: '',
-            status: 1
+            status: 1,
+            countries: []
         }
     }
     async componentDidMount() {
         let { id } = this.state
         if (id) {
             this.setState({
-                ...await this.props.getCategoryDetail(id)
+                ...await this.props.getCityDetail(id),
             })
         }
+        this.fetchCountry()
+    }
+    fetchCountry = async () => {
+        this.setState({
+            countries: await this.props.getAllCountry()
+        })
     }
     changeHandler = event => {
         this.setState({
@@ -33,12 +42,12 @@ class CategoryEdit extends Component {
         this.setState({ isWait: true })
         let { id } = this.state
         let response = id ? await this.props.updateData(this.state, id) : await this.props.storeData(this.state)
-        response && this.props.history.push('/category/list')
+        response && this.props.history.push('/city/list')
         this.setState({ isWait: false })
     }
     render() {
-        let { name, isWait } = this.state
-        let isDone = name
+        let { name, country_id, countries, isWait } = this.state
+        let isDone = country_id && name && !isWait
         return (
             <Fragment>
                 <div className="content">
@@ -47,7 +56,7 @@ class CategoryEdit extends Component {
                             <div className="card">
 
                                 <div className="card-header">
-                                    <Link className="btn btn-dark btn-sm float-right" to='/category/list'><i className="fa fa-eye"></i></Link>
+                                    <Link className="btn btn-dark btn-sm float-right" to='/country/list'><i className="fa fa-eye"></i></Link>
                                 </div>
 
                                 <div className="card-body">
@@ -59,9 +68,24 @@ class CategoryEdit extends Component {
                                                 className="form-control"
                                                 placeholder="Enter Name"
                                                 name="name"
-                                                defaultValue={name}
+                                                value={name}
                                                 onChange={this.changeHandler}
+                                                required
                                             />
+                                        </Form.Group>
+                                        <Form.Group>
+                                            <Form.Label>Country<span>*</span></Form.Label>
+                                            <Form.Control
+                                                as='select'
+                                                className="form-control"
+                                                name="country_id"
+                                                value={country_id}
+                                                onChange={this.changeHandler}
+                                                required
+                                            >
+                                                <option value=''>Select One</option>
+                                                {countries.length > 0 && countries.map(item => <option value={item.id} key={item.id}>{item.name}</option>)}
+                                            </Form.Control>
                                         </Form.Group>
                                         <Button type="submit" block variant="dark" disabled={!isDone}>{isWait ? `Please Wait...` : `Submit`}</Button>
                                     </Form>
@@ -77,4 +101,4 @@ class CategoryEdit extends Component {
 const mapStateToProps = state => ({
     common: state.common
 })
-export default connect(mapStateToProps, { updateData, storeData, getCategoryDetail })(CategoryEdit)
+export default connect(mapStateToProps, { updateData, storeData, getCityDetail, getAllCountry })(CityEdit)
