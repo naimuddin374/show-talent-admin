@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 import Loading from './../layout/Loading';
 import { updateEditorPick, getAllPost } from '../../store/actions/postActions';
-import { getStatus, getVideoLink, getDateTime } from '../../util/helper';
+import { getStatus, getVideoLink, getDateTime, getAuthorName } from '../../util/helper';
 import { ReactTinyLink } from 'react-tiny-link'
 import { API_URL } from '../../store/actions/types';
 import DropdownButton from 'react-bootstrap/DropdownButton'
@@ -67,7 +67,6 @@ class EditorPick extends Component {
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 1 })}>Approved</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 2 })}>Rejected</button>
                                     <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 3 })}>Unpublished</button>
-                                    <button className='btn btn-dark mx-2 btn-sm' onClick={() => this.setState({ postStatus: 3 })}>Unpublished</button>
                                 </div>
                                 <div className="card-body">
                                     <table id="example2" className="table table-bordered table-hover table-responsive">
@@ -99,7 +98,7 @@ class EditorPick extends Component {
                                                                     {item.is_editor === 1 && <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.editorPickHandler(item.id, 0)}>Remove Editor</Dropdown.Item>}
                                                                 </DropdownButton>
                                                             </td>
-                                                            <td>{item.page ? item.page.name : item.user.name}</td>
+                                                            <td>{getAuthorName(item.user, item.page)}</td>
                                                             <td>{item.category.name}</td>
                                                             <td>{item.title}</td>
                                                             {item.type === 2 && <td>

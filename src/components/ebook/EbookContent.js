@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Loading from './../layout/Loading';
-import { getStatus, getDateTime } from '../../util/helper';
+import { getStatus, getDateTime, getAuthorName } from '../../util/helper';
 import { getAllBook } from '../../store/actions/ebookActions';
 import { API_URL } from '../../store/actions/types';
 
@@ -76,7 +76,7 @@ class EbookContent extends Component {
                                                                 <i className="fa fa-eye"></i>
                                                             </Link>
                                                         </td>
-                                                        <td>{item.page ? item.page.name : item.user.name}</td>
+                                                        <td>{getAuthorName(item.user, item.page)}</td>
                                                         <td>{item.category && item.category.name}</td>
                                                         <td>{item.name}</td>
                                                         <td>{item.author_name}</td>

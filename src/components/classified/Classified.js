@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Loading from '../layout/Loading';
 import { approveData, rejectData, getAllClassified, classifiedUnpublished, deleteClassified } from '../../store/actions/classifiedActions';
-import { getStatus, getDateTime } from '../../util/helper';
+import { getStatus, getDateTime, getAuthorName } from '../../util/helper';
 import renderHTML from 'react-render-html';
 import { API_URL } from '../../store/actions/types';
 import ClassifiedReject from './ClassifiedReject';
@@ -42,8 +42,10 @@ class Classified extends Component {
     }
     approveHandler = async id => {
         let points = prompt('Enter Reward Point', 0);
-        await this.props.approveData(id, { points })
-        this.onFetchData()
+        if (points) {
+            await this.props.approveData(id, { points })
+            this.onFetchData()
+        }
     }
     removeHandler = async id => {
         await this.props.deleteClassified(id)
@@ -117,7 +119,7 @@ class Classified extends Component {
                                                                 <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.removeHandler(item.id)}>Delete</Dropdown.Item>
                                                             </DropdownButton>
                                                         </td>
-                                                        <td>{item.page ? item.page.name : item.user.name}</td>
+                                                        <td>{getAuthorName(item.user, item.page)}</td>
                                                         <td>{item.category && item.category.name}</td>
                                                         <td>{item.title}</td>
                                                         <td>{item.image && <img src={API_URL + item.image} alt='Pic' width='100' />}</td>

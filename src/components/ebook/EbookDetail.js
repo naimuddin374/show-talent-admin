@@ -4,7 +4,7 @@ import { API_URL } from '../../store/actions/types'
 import Loading from '../layout/Loading';
 import { getBookDetail, approveData, ebookUnpublished, deleteEbook } from '../../store/actions/ebookActions';
 import { chapterApprove, chapterUnpublished, deleteChapter } from '../../store/actions/chapterActions';
-import { getStatus, getDateTime } from '../../util/helper';
+import { getStatus, getDateTime, getAuthorName } from '../../util/helper';
 import { Link } from 'react-router-dom';
 import renderHTML from 'react-render-html';
 import BookReject from './BookReject';
@@ -52,8 +52,10 @@ class EbookDetail extends Component {
     }
     approveHandler = async id => {
         let points = prompt('Enter Reward Point', 0);
-        await this.props.approveData(id, points)
-        this.onFetchData()
+        if (points) {
+            await this.props.approveData(id, { points })
+            this.onFetchData()
+        }
     }
     unpublishedHandler = async id => {
         await this.props.ebookUnpublished(id)
@@ -65,8 +67,10 @@ class EbookDetail extends Component {
     }
     chapterApproveHandler = async id => {
         let points = prompt('Enter Reward Point', 0);
-        await this.props.chapterApprove(id, points)
-        this.onFetchData()
+        if (points) {
+            await this.props.chapterApprove(id, { points })
+            this.onFetchData()
+        }
     }
     chapterUnpublishedHandler = async id => {
         await this.props.chapterUnpublished(id)
@@ -135,7 +139,7 @@ class EbookDetail extends Component {
                                                             <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.removeHandler(data.id)}>Delete</Dropdown.Item>
                                                         </DropdownButton>
                                                     </td>
-                                                    <td>{data.page ? data.page.name : data.user.name}</td>
+                                                    <td>{getAuthorName(data.user, data.page)}</td>
                                                     <td>{data.category.name}</td>
                                                     <td>{data.name}</td>
                                                     <td>{data.author_name}</td>

@@ -5,7 +5,7 @@ import Loading from '../layout/Loading';
 import { getAllPage, approveData, deletePage, pageUnpublished } from '../../store/actions/pageActions';
 import { API_URL } from '../../store/actions/types';
 import noImg from '../assets/images/no-img.jpg';
-import { getDateTime, getStatus } from '../../util/helper';
+import { getDateTime, getStatus, getAuthorName } from '../../util/helper';
 import PageReject from './PageReject';
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import { Dropdown } from 'react-bootstrap';
@@ -99,7 +99,7 @@ class Page extends Component {
                                                                 <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.removeHandler(item.id)}>Delete</Dropdown.Item>
                                                             </DropdownButton>
                                                         </td>
-                                                        <td>{item.user.name}</td>
+                                                        <td>{getAuthorName(item.user)}</td>
                                                         <td><img src={item.image ? API_URL + item.image : noImg} alt='Profile' width='100' /></td>
                                                         <td>{item.name}</td>
                                                         <td>{item.email}</td>

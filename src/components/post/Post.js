@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux';
 import Loading from './../layout/Loading';
 import { approveData, rejectData, getAllPost, postUnpublished, deletePost } from '../../store/actions/postActions';
-import { getStatus, getVideoLink, getDateTime } from '../../util/helper';
+import { getStatus, getVideoLink, getDateTime, getAuthorName } from '../../util/helper';
 import { ReactTinyLink } from 'react-tiny-link'
 import { API_URL } from '../../store/actions/types';
 import PostReject from './PostReject';
@@ -44,8 +44,10 @@ class Post extends Component {
     }
     approveHandler = async id => {
         let points = prompt('Enter Reward Point', 0);
-        await this.props.approveData(id, { points })
-        this.onFetchData()
+        if (points) {
+            await this.props.approveData(id, { points })
+            this.onFetchData()
+        }
     }
     removeHandler = async id => {
         await this.props.deletePost(id)
@@ -127,7 +129,7 @@ class Post extends Component {
                                                                     <Dropdown.Item href='#' onClick={() => window.confirm('Are you sure?') && this.removeHandler(item.id)}>Delete</Dropdown.Item>
                                                                 </DropdownButton>
                                                             </td>
-                                                            <td>{item.page ? item.page.name : item.user.name}</td>
+                                                            <td>{getAuthorName(item.user, item.page)}</td>
                                                             <td>{item.category.name}</td>
                                                             <td>{item.title}</td>
                                                             {item.type === 2 && <td>
