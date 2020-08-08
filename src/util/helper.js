@@ -1,6 +1,8 @@
 import React from 'react'
-import Moment from 'react-moment';
+// import Moment from 'react-moment';
 import renderHTML from 'react-render-html';
+import dateFormat from 'dateformat';
+import TimeAgo from 'react-timeago'
 
 
 export const getStatus = status => {
@@ -20,13 +22,25 @@ export const getVideoLink = link => {
         return link
     }
 }
-/* type value, 1=date and time, 2=date, 3=time */
-export const getDateTime = (dateTime, type = 1) => {
-    switch (type) {
-        case 1: return <Moment format="D MMM YYYY H:mm A" withTitle>{dateTime}</Moment>
-        case 2: return <Moment format="D MMM YYYY" withTitle>{dateTime}</Moment>
-        case 3: return <Moment format="H:M A" withTitle>{dateTime}</Moment>
-        default: return dateTime
+
+export const getDateTime = (date, type = 2) => {
+    if (!date) return ''
+    date = new Date(date)
+    let newDate = new Date()
+
+    let milliseconds = Math.abs(newDate - date);
+    let hours = milliseconds / 36e5;
+
+    if (hours > 24) {
+        if (type === 1) {
+            return dateFormat(new Date(date), "d mmm yyyy h:MM TT");
+        } else if (type === 2) {
+            return dateFormat(new Date(date), "d mmm yyyy");
+        } else if (type === 3) {
+            return dateFormat(new Date(date), "h:MM tt");
+        }
+    } else {
+        return <TimeAgo date={date} />
     }
 }
 
