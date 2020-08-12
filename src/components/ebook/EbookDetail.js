@@ -140,7 +140,7 @@ class EbookDetail extends Component {
                                                         </DropdownButton>
                                                     </td>
                                                     <td>{getAuthorName(data.user, data.page)}</td>
-                                                    <td>{data.category.name}</td>
+                                                    <td>{data.category && data.category.name}</td>
                                                     <td>{data.name}</td>
                                                     <td>{data.author_name}</td>
                                                     <td>{data.publication_date}</td>
